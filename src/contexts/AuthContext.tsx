@@ -12,53 +12,39 @@ declare global {
         local: {
           set: (items: Record<string, unknown>) => void;
           remove: (key: string) => void;
-        }
-      }
-    }
+        };
+      };
+    };
   }
 }
 
-type AuthContextType = {
-  user: User | null;
+interface AuthContextType {
+  currentUser: User | null;
   loading: boolean;
-};
+}
 
 const AuthContext = createContext<AuthContextType>({
-  user: null,
+  currentUser: null,
   loading: true,
 });
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+export const useAuth = () => useContext(AuthContext);
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+      setCurrentUser(user);
       setLoading(false);
-      
-      // Chromeの拡張機能と共有するためローカルストレージにUIDを保存
-      if (user) {
-        localStorage.setItem('uid', user.uid);
-        
-        // Chrome拡張機能向けにchrome.storage.localも使用（ブラウザ環境の場合のみ）
-        try {
-          if (typeof window !== 'undefined' && window.chrome?.storage) {
-            window.chrome.storage.local.set({ uid: user.uid });
-          }
-        } catch {
-          console.log('Chrome拡張機能APIが利用できません (通常のブラウザ環境での実行時は無視してください)');
-        }
-      } else {
-        localStorage.removeItem('uid');
-        
-        // Chrome拡張機能向けにchrome.storage.localからも削除
-        try {
-          if (typeof window !== 'undefined' && window.chrome?.storage) {
-            window.chrome.storage.local.remove('uid');
-          }
-        } catch {
-          console.log('Chrome拡張機能APIが利用できません (通常のブラウザ環境での実行時は無視してください)');
+
+      // 拡張機能向けにUIDを保存（オプショナル）
+      if (typeof window !== 'undefined' && window.chrome?.storage?.local) {
+        if (user?.uid) {
+          window.chrome.storage.local.set({ uid: user.uid });
+        } else {
+          window.chrome.storage.local.remove('uid');
         }
       }
     });
@@ -67,10 +53,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {children}
+    <AuthContext.Provider value={{ currentUser, loading }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
-}
-
-export const useAuth = () => useContext(AuthContext); 
+};
