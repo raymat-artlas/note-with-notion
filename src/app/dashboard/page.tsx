@@ -1,36 +1,40 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { createUserProfile } from '@/lib/userService';
-import { auth } from '@/lib/firebase';
 
 export default function DashboardPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const router = useRouter();
+  const [profileCreated, setProfileCreated] = useState(false);
   
-  // デバッグ用ログ
-  console.log('Dashboard render:', { loading, user: user?.email });
+  console.log('Dashboard render:', { loading, user: user?.email, profileCreated });
   
+  // 認証チェック
   useEffect(() => {
-    console.log('Dashboard useEffect:', { loading, user: user?.email });
-    
-    // 認証済みかどうかの確認と、リダイレクト処理
     if (!loading && !user) {
-      console.log('未認証なのでログインページへリダイレクト');
+      console.log('未認証のためログインページへリダイレクト');
       router.push('/login');
-      return;
-    }
-    
-    // ユーザープロファイルの作成/更新処理
-    if (!loading && user) {
-      console.log('ユーザープロファイルを作成/更新');
-      createUserProfile(user).catch(console.error);
     }
   }, [user, loading, router]);
+
+  // プロファイル作成は別のuseEffectで分離
+  useEffect(() => {
+    if (user && !profileCreated) {
+      console.log('ユーザープロフィール作成中...');
+      createUserProfile(user)
+        .then(() => {
+          console.log('プロフィール作成完了');
+          setProfileCreated(true);
+        })
+        .catch(err => {
+          console.error('プロフィール作成エラー:', err);
+        });
+    }
+  }, [user, profileCreated]);
   
-  // ローディング中
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -42,7 +46,6 @@ export default function DashboardPage() {
     );
   }
   
-  // ユーザーがないとき（リダイレクト中の表示）
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -53,7 +56,6 @@ export default function DashboardPage() {
     );
   }
   
-  // 以下は既存のダッシュボードUI
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow">
@@ -84,8 +86,8 @@ export default function DashboardPage() {
         </div>
         
         <button
-          onClick={() => {
-            auth.signOut();
+          onClick={async () => {
+            await signOut();
             router.push('/');
           }}
           className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
