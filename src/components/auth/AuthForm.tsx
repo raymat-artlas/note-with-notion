@@ -58,6 +58,12 @@ export default function AuthForm({ mode }: AuthFormProps) {
       return;
     }
     
+    if (!auth) {
+      setError('認証システムが初期化されていません。しばらく経ってからお試しください。');
+      console.error('Firebase Auth is not initialized');
+      return;
+    }
+    
     setLoading(true);
     setError('');
 
@@ -93,6 +99,12 @@ export default function AuthForm({ mode }: AuthFormProps) {
   };
 
   const handleGoogleSignIn = async () => {
+    if (!auth) {
+      setError('認証システムが初期化されていません。しばらく経ってからお試しください。');
+      console.error('Firebase Auth is not initialized');
+      return;
+    }
+
     setLoading(true);
     setError('');
     
