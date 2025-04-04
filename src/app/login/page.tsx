@@ -1,48 +1,31 @@
 'use client';
 
-import AuthForm from '@/components/auth/AuthForm';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  
-  // すでにログインしている場合はダッシュボードにリダイレクト
-  useEffect(() => {
-    if (!loading && user) {
-      router.push('/dashboard');
-    }
-  }, [user, loading, router]);
-
-  // ログイン済みの場合はローディング表示
-  if (loading || user) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-50">読み込み中...</div>;
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-extrabold text-gray-900">note with Notion</h1>
-        <h2 className="mt-3 text-center text-xl font-semibold text-gray-600">
-          アカウントにログイン
-        </h2>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <AuthForm mode="login" />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">ログイン</h1>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            現在、認証システムはメンテナンス中です。
+          </p>
+        </div>
         
-        <p className="mt-6 text-center text-sm text-gray-600">
-          アカウントをお持ちでない場合は{' '}
-          <Link 
-            href="/signup" 
-            className="font-medium text-blue-600 hover:text-blue-500 hover:underline"
-          >
-            新規登録
-          </Link>
-        </p>
+        <div className="mt-8 bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="text-center">
+            <p className="mb-4 text-gray-600">
+              申し訳ありませんが、現在システムメンテナンス中です。
+            </p>
+            <Link 
+              href="/"
+              className="inline-block bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              トップページに戻る
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

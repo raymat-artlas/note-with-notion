@@ -1,14 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signInWithPopup,
-  GoogleAuthProvider,
-  AuthError 
-} from 'firebase/auth';
-import { auth } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { FiEye, FiEyeOff, FiAlertCircle } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
@@ -25,110 +17,24 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // エラーメッセージをユーザーフレンドリーに変換
-  const getErrorMessage = (error: AuthError) => {
-    const errorCode = error.code;
-    switch (errorCode) {
-      case 'auth/invalid-email':
-        return 'メールアドレスの形式が正しくありません';
-      case 'auth/user-disabled':
-        return 'このアカウントは無効化されています';
-      case 'auth/user-not-found':
-        return 'メールアドレスまたはパスワードが間違っています';
-      case 'auth/wrong-password':
-        return 'メールアドレスまたはパスワードが間違っています';
-      case 'auth/email-already-in-use':
-        return 'このメールアドレスはすでに使用されています';
-      case 'auth/weak-password':
-        return 'パスワードは6文字以上にしてください';
-      case 'auth/network-request-failed':
-        return 'ネットワークエラーが発生しました。インターネット接続を確認してください';
-      case 'auth/too-many-requests':
-        return 'ログイン試行回数が多すぎます。しばらく時間をおいてから再試行してください';
-      default:
-        return `エラーが発生しました: ${error.message}`;
-    }
+  // パスワードの表示/非表示を切り替える
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!email || !password) {
-      setError('メールアドレスとパスワードを入力してください');
-      return;
-    }
-    
-    if (!auth) {
-      setError('認証システムが初期化されていません。しばらく経ってからお試しください。');
-      console.error('Firebase Auth is not initialized');
-      return;
-    }
-    
     setLoading(true);
-    setError('');
-
-    try {
-      if (mode === 'signup') {
-        console.log('新規アカウント作成中...');
-        await createUserWithEmailAndPassword(auth, email, password);
-      } else {
-        console.log('ログイン中...');
-        await signInWithEmailAndPassword(auth, email, password);
-      }
-      
-      // ログイン成功時にローカルストレージにUIDを保存（拡張機能用）
-      const user = auth.currentUser;
-      if (user) {
-        console.log('認証成功:', user.email);
-        localStorage.setItem('uid', user.uid);
-      }
-      
-      console.log('ダッシュボードへリダイレクト');
-      
-      // マイページへリダイレクト（少し遅延を入れる）
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 500);
-    } catch (err: unknown) {
-      console.error('認証エラー:', err);
-      setError(getErrorMessage(err as AuthError));
-    } finally {
-      // finally ブロックは必ず実行される
+    
+    // ダミー処理
+    setTimeout(() => {
       setLoading(false);
-    }
+      setError('現在、メンテナンス中のためログインできません。');
+    }, 1500);
   };
 
-  const handleGoogleSignIn = async () => {
-    if (!auth) {
-      setError('認証システムが初期化されていません。しばらく経ってからお試しください。');
-      console.error('Firebase Auth is not initialized');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-    
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      
-      // ログイン成功時にローカルストレージにUIDを保存（拡張機能用）
-      if (result.user) {
-        localStorage.setItem('uid', result.user.uid);
-      }
-      
-      // マイページへリダイレクト
-      router.push('/dashboard');
-    } catch (err: unknown) {
-      setError(getErrorMessage(err as AuthError));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // パスワードの表示/非表示を切り替える
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handleGoogleSignIn = () => {
+    setError('現在、Google認証は利用できません。メンテナンス中です。');
   };
 
   return (
@@ -197,7 +103,19 @@ export default function AuthForm({ mode }: AuthFormProps) {
           disabled={loading}
           className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors"
         >
-          {loading ? '処理中...' : mode === 'login' ? 'ログイン' : 'アカウント作成'}
+          {loading ? (
+            <span className="flex items-center justify-center">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              処理中...
+            </span>
+          ) : mode === 'login' ? (
+            'ログイン'
+          ) : (
+            'アカウント作成'
+          )}
         </button>
       </form>
       

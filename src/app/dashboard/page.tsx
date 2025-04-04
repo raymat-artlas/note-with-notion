@@ -1,99 +1,40 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import { createUserProfile } from '@/lib/userService';
+import Link from "next/link";
 
 export default function DashboardPage() {
-  const { user, loading, signOut } = useAuth();
-  const router = useRouter();
-  const [profileCreated, setProfileCreated] = useState(false);
-  
-  console.log('Dashboard render:', { loading, user: user?.email, profileCreated });
-  
-  // 認証チェック
-  useEffect(() => {
-    if (!loading && !user) {
-      console.log('未認証のためログインページへリダイレクト');
-      router.push('/login');
-    }
-  }, [user, loading, router]);
-
-  // プロファイル作成は別のuseEffectで分離
-  useEffect(() => {
-    if (user && !profileCreated) {
-      console.log('ユーザープロフィール作成中...');
-      createUserProfile(user)
-        .then(() => {
-          console.log('プロフィール作成完了');
-          setProfileCreated(true);
-        })
-        .catch(err => {
-          console.error('プロフィール作成エラー:', err);
-        });
-    }
-  }, [user, profileCreated]);
-  
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-lg text-gray-600">ユーザー情報を読み込み中...</p>
-        </div>
-      </div>
-    );
-  }
-  
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-lg text-gray-600">ログインが必要です。リダイレクト中...</p>
-        </div>
-      </div>
-    );
-  }
-  
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow">
-        <h1 className="text-2xl font-bold mb-6">ダッシュボード</h1>
-        
-        <div className="flex items-center mb-8 p-4 bg-blue-50 rounded-lg">
-          <div className="ml-4">
-            <p className="font-medium">ようこそ、{user.displayName || user.email}さん！</p>
-            <p className="text-sm text-gray-600">
-              現在、Notionとの連携はありません。設定から連携を行ってください。
-            </p>
-          </div>
-        </div>
-        
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">クイックスタート</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="border p-4 rounded-lg hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium">Notionと連携する</h3>
-              <p className="text-sm text-gray-600">APIトークンとデータベースIDを設定します</p>
-            </div>
-            
-            <div className="border p-4 rounded-lg hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium">Chrome拡張機能をインストール</h3>
-              <p className="text-sm text-gray-600">noteからNotionへの連携を簡単に</p>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-lg shadow p-6 mb-8">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">ダッシュボード</h1>
+          
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-yellow-700">
+                  メンテナンス中: 現在、システムはメンテナンスモードで動作しています。
+                </p>
+              </div>
             </div>
           </div>
+          
+          <p className="text-gray-600 mb-4">
+            ダッシュボード機能は現在準備中です。もうしばらくお待ちください。
+          </p>
+          
+          <Link 
+            href="/"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            トップページに戻る
+          </Link>
         </div>
-        
-        <button
-          onClick={async () => {
-            await signOut();
-            router.push('/');
-          }}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          ログアウト
-        </button>
       </div>
     </div>
   );
