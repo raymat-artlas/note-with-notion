@@ -1,52 +1,51 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 // シンプル化した認証コンテキスト
 interface AuthContextType {
-  user: null;
+  user: User | null;
   loading: boolean;
   error: string | null;
-  signOut: () => Promise<void>;
-  bypassAuth: () => void;
 }
 
 // 初期コンテキスト値
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  loading: false,
-  error: null,
-  signOut: async () => {},
-  bypassAuth: () => {},
+  loading: true,
+  error: null
 });
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
-  // 認証をバイパスする機能（デバッグ用）
-  const bypassAuth = () => {
-    console.log('⚠️ 認証バイパスモードを有効化');
-    setLoading(false);
-    setError(null);
-  };
-  
-  // シンプル化したサインアウト関数
-  const signOut = async () => {
-    console.log('サインアウト処理（現在無効化中）');
-    return Promise.resolve();
-  };
+
+  useEffect(() => {
+    // 認証状態監視を簡素化
+    const unsubscribe = auth ? 
+      onAuthStateChanged(
+        auth,
+        (user) => {
+          setUser(user);
+          setLoading(false);
+        },
+        (error) => {
+          console.error('認証エラー:', error);
+          setError('認証エラーが発生しました');
+          setLoading(false);
+        }
+      ) : () => {};
+
+    return unsubscribe;
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ 
-      user: null, 
-      loading, 
-      error, 
-      signOut, 
-      bypassAuth 
-    }}>
+    <AuthContext.Provider value={{ user, loading, error }}>
       {children}
     </AuthContext.Provider>
   );
