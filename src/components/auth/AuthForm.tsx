@@ -76,8 +76,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
       
       // マイページへリダイレクト
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(getErrorMessage(err));
+    } catch (err: unknown) {
+      setError(getErrorMessage(err as AuthError));
     } finally {
       setLoading(false);
     }
@@ -98,8 +98,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
       
       // マイページへリダイレクト
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(getErrorMessage(err));
+    } catch (err: unknown) {
+      setError(getErrorMessage(err as AuthError));
     } finally {
       setLoading(false);
     }

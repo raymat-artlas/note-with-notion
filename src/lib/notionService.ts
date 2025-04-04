@@ -1,11 +1,13 @@
 import { 
   doc, 
-  collection, 
+  // collection の削除または使わない場合はコメントアウト 
+  // collection,
   setDoc, 
   getDoc, 
   updateDoc, 
   deleteDoc,
-  serverTimestamp 
+  serverTimestamp, 
+  Timestamp
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -14,8 +16,8 @@ export type NotionIntegration = {
   userId: string;
   apiToken: string;
   databaseId: string;
-  createdAt?: any;
-  updatedAt?: any;
+  createdAt?: Timestamp | null;
+  updatedAt?: Timestamp | null;
 };
 
 // Notion連携情報を保存

@@ -3,7 +3,8 @@ import {
   setDoc, 
   getDoc, 
   updateDoc, 
-  serverTimestamp 
+  serverTimestamp,
+  Timestamp
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { User } from 'firebase/auth';
@@ -14,8 +15,8 @@ export type UserProfile = {
   email: string | null;
   displayName: string | null;
   photoURL?: string | null;
-  createdAt?: any;
-  lastLoginAt?: any;
+  createdAt?: Timestamp | null;
+  lastLoginAt?: Timestamp | null;
 };
 
 // ユーザー登録時にFirestoreにユーザー情報を保存
