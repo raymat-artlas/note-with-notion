@@ -5,7 +5,9 @@ import {
   updateDoc, 
   serverTimestamp,
   Timestamp,
-  FieldValue
+  FieldValue,
+  DocumentData,
+  QuerySnapshot  // 将来的に必要になるため追加
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { User } from 'firebase/auth';
@@ -18,7 +20,11 @@ export type UserProfile = {
   photoURL?: string | null;
   createdAt?: Timestamp | FieldValue | null;
   lastLoginAt?: Timestamp | FieldValue | null;
+  updatedAt?: Timestamp | FieldValue | null; // 更新日時フィールドを明示的に追加
 };
+
+// プロファイル更新用の型定義（createdAtなどの自動生成フィールドを除外）
+export type UserProfileUpdate = Partial<Omit<UserProfile, 'createdAt' | 'lastLoginAt' | 'updatedAt'>>;
 
 // ユーザー登録時にFirestoreにユーザー情報を保存
 export const createUserProfile = async (user: User): Promise<void> => {
@@ -67,7 +73,7 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
 };
 
 // ユーザープロファイルを更新
-export const updateUserProfile = async (uid: string, profileData: any): Promise<void> => {
+export const updateUserProfile = async (uid: string, profileData: UserProfileUpdate): Promise<void> => {
   if (!db) {
     console.error('Firestore が初期化されていません');
     return;
