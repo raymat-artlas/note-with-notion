@@ -22,6 +22,11 @@ export type UserProfile = {
 
 // ユーザー登録時にFirestoreにユーザー情報を保存
 export const createUserProfile = async (user: User): Promise<void> => {
+  if (!db) {
+    console.error('Firestore が初期化されていません');
+    return;
+  }
+
   const userRef = doc(db, 'users', user.uid);
   const userSnap = await getDoc(userRef);
   
@@ -46,6 +51,11 @@ export const createUserProfile = async (user: User): Promise<void> => {
 
 // ユーザープロファイルの取得
 export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
+  if (!db) {
+    console.error('Firestore が初期化されていません');
+    return null;
+  }
+
   const userRef = doc(db, 'users', uid);
   const userSnap = await getDoc(userRef);
   
@@ -54,4 +64,18 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
   }
   
   return null;
+};
+
+// ユーザープロファイルを更新
+export const updateUserProfile = async (uid: string, profileData: any): Promise<void> => {
+  if (!db) {
+    console.error('Firestore が初期化されていません');
+    return;
+  }
+
+  const userRef = doc(db, 'users', uid);
+  await updateDoc(userRef, {
+    ...profileData,
+    updatedAt: serverTimestamp(),
+  });
 }; 
