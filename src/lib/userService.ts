@@ -5,9 +5,8 @@ import {
   updateDoc, 
   serverTimestamp,
   Timestamp,
-  FieldValue,
-  DocumentData,
-  QuerySnapshot  // 将来的に必要になるため追加
+  FieldValue
+  // 未使用のためDocumentDataとQuerySnapshotのインポートを削除
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { User } from 'firebase/auth';
