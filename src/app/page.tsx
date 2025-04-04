@@ -1,6 +1,18 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function HomePage() {
+  useEffect(() => {
+    console.log('Firebase環境変数のチェック:', {
+      apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+      authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      // 他の環境変数も同様に
+    });
+  }, []);
+
   return (
     <div className="bg-white">
       {/* ヒーローセクション */}
