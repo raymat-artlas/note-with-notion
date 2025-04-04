@@ -21,12 +21,17 @@ export type NotionIntegration = {
   updatedAt?: Timestamp | FieldValue | null;
 };
 
-// Notion連携情報を保存
+// Notion連携情報をFirestoreに保存
 export const saveNotionIntegration = async (
   userId: string, 
   apiToken: string, 
   databaseId: string
 ): Promise<void> => {
+  if (!db) {
+    console.error('Firestore が初期化されていません');
+    return;
+  }
+
   const notionRef = doc(db, 'notionIntegrations', userId);
   
   const integrationData: NotionIntegration = {
@@ -42,6 +47,11 @@ export const saveNotionIntegration = async (
 
 // Notion連携情報を取得
 export const getNotionIntegration = async (userId: string): Promise<NotionIntegration | null> => {
+  if (!db) {
+    console.error('Firestore が初期化されていません');
+    return null;
+  }
+
   const notionRef = doc(db, 'notionIntegrations', userId);
   const notionSnap = await getDoc(notionRef);
   
@@ -58,6 +68,11 @@ export const updateNotionIntegration = async (
   apiToken?: string, 
   databaseId?: string
 ): Promise<void> => {
+  if (!db) {
+    console.error('Firestore が初期化されていません');
+    return;
+  }
+
   const notionRef = doc(db, 'notionIntegrations', userId);
   
   const updateData: Partial<NotionIntegration> = {
@@ -72,6 +87,11 @@ export const updateNotionIntegration = async (
 
 // Notion連携を削除
 export const deleteNotionIntegration = async (userId: string): Promise<void> => {
+  if (!db) {
+    console.error('Firestore が初期化されていません');
+    return;
+  }
+
   const notionRef = doc(db, 'notionIntegrations', userId);
   await deleteDoc(notionRef);
 }; 
