@@ -63,22 +63,31 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
     try {
       if (mode === 'signup') {
+        console.log('新規アカウント作成中...');
         await createUserWithEmailAndPassword(auth, email, password);
       } else {
+        console.log('ログイン中...');
         await signInWithEmailAndPassword(auth, email, password);
       }
       
       // ログイン成功時にローカルストレージにUIDを保存（拡張機能用）
       const user = auth.currentUser;
       if (user) {
+        console.log('認証成功:', user.email);
         localStorage.setItem('uid', user.uid);
       }
       
-      // マイページへリダイレクト
-      router.push('/dashboard');
+      console.log('ダッシュボードへリダイレクト');
+      
+      // マイページへリダイレクト（少し遅延を入れる）
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 500);
     } catch (err: unknown) {
+      console.error('認証エラー:', err);
       setError(getErrorMessage(err as AuthError));
     } finally {
+      // finally ブロックは必ず実行される
       setLoading(false);
     }
   };

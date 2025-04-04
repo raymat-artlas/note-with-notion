@@ -10,26 +10,50 @@ export default function DashboardPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   
+  // デバッグ用ログ
+  console.log('Dashboard render:', { loading, user: user?.email });
+  
   useEffect(() => {
-    // 未ログイン時はログインページにリダイレクト
+    console.log('Dashboard useEffect:', { loading, user: user?.email });
+    
+    // 認証済みかどうかの確認と、リダイレクト処理
     if (!loading && !user) {
+      console.log('未認証なのでログインページへリダイレクト');
       router.push('/login');
+      return;
     }
     
-    // ログイン後、ユーザープロファイルを作成/更新
-    if (user) {
+    // ユーザープロファイルの作成/更新処理
+    if (!loading && user) {
+      console.log('ユーザープロファイルを作成/更新');
       createUserProfile(user).catch(console.error);
     }
   }, [user, loading, router]);
   
+  // ローディング中
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">読み込み中...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-lg text-gray-600">ユーザー情報を読み込み中...</p>
+        </div>
+      </div>
+    );
   }
   
+  // ユーザーがないとき（リダイレクト中の表示）
   if (!user) {
-    return null; // リダイレクト中
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-gray-600">ログインが必要です。リダイレクト中...</p>
+        </div>
+      </div>
+    );
   }
   
+  // 以下は既存のダッシュボードUI
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow">

@@ -35,16 +35,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('AuthProvider: useEffect 実行');
+    
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log('onAuthStateChanged 呼び出し:', user ? '認証済み' : '未認証');
       setCurrentUser(user);
       setLoading(false);
 
-      // 拡張機能向けにUIDを保存（オプショナル）
-      if (typeof window !== 'undefined' && window.chrome?.storage?.local) {
+      // ローカルストレージにもユーザー情報を保存（ブラウザ環境のみ）
+      if (typeof window !== 'undefined') {
         if (user?.uid) {
-          window.chrome.storage.local.set({ uid: user.uid });
+          localStorage.setItem('uid', user.uid);
+          
+          // Chrome拡張機能向け (オプショナル)
+          if (window.chrome?.storage?.local) {
+            window.chrome.storage.local.set({ uid: user.uid });
+          }
         } else {
-          window.chrome.storage.local.remove('uid');
+          localStorage.removeItem('uid');
+          
+          // Chrome拡張機能向け (オプショナル)
+          if (window.chrome?.storage?.local) {
+            window.chrome.storage.local.remove('uid');
+          }
         }
       }
     });
@@ -52,9 +65,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
+  // デバッグ用ログ
+  console.log('AuthProvider render:', { loading, user: currentUser?.email });
+
   return (
     <AuthContext.Provider value={{ user: currentUser, loading }}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };
