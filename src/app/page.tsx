@@ -16,7 +16,7 @@ export default function HomePage() {
         
         <div className="flex flex-col sm:flex-row gap-4 mt-4">
           <Link 
-            href="#" 
+            href="/login" 
             className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
           >
             始める

@@ -1,6 +1,7 @@
 'use client';
 
 import "./globals.css";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export default function RootLayout({
   children,
@@ -14,9 +15,11 @@ export default function RootLayout({
         <meta name="description" content="noteで見つけた情報をNotionに整理" />
       </head>
       <body className="antialiased">
-        <div className="min-h-screen">
-          {children}
-        </div>
+        <AuthProvider>
+          <div className="min-h-screen">
+            {children}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );
