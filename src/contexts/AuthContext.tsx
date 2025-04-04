@@ -10,7 +10,7 @@ declare global {
     chrome?: {
       storage?: {
         local: {
-          set: (items: Record<string, any>) => void;
+          set: (items: Record<string, unknown>) => void;
           remove: (key: string) => void;
         }
       }
