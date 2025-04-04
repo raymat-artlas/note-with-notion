@@ -40,6 +40,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // サインアウト関数
   const signOut = async () => {
     try {
+      if (!auth) {
+        console.error('認証システムが初期化されていません');
+        return;
+      }
+      
       await auth.signOut();
       localStorage.removeItem('uid');
       
