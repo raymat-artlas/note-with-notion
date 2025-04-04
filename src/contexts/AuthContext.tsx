@@ -59,6 +59,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     console.log('AuthProvider: useEffect 実行 - 認証状態監視開始');
     
+    // auth が undefined の場合はリスナーを設定せず、loading を false に
+    if (!auth) {
+      console.error('認証システムが初期化されていません');
+      setLoading(false);
+      return () => {};
+    }
+    
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log('onAuthStateChanged 呼び出し:', user ? `認証済み: ${user.email}` : '未認証');
       setCurrentUser(user);
