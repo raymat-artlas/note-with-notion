@@ -1,6 +1,5 @@
 'use client';
 
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from '@/contexts/AuthContext';
@@ -15,11 +14,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-export const metadata: Metadata = {
-  title: "note with Notion",
-  description: "noteで見つけた情報をNotionに整理",
-};
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -71,6 +65,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   try {
     return (
       <html lang="ja">
+        <head>
+          <title>note with Notion</title>
+          <meta name="description" content="noteで見つけた情報をNotionに整理" />
+        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
