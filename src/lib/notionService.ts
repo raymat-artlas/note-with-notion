@@ -7,7 +7,8 @@ import {
   updateDoc, 
   deleteDoc,
   serverTimestamp, 
-  Timestamp
+  Timestamp,
+  FieldValue
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -16,8 +17,8 @@ export type NotionIntegration = {
   userId: string;
   apiToken: string;
   databaseId: string;
-  createdAt?: Timestamp | null;
-  updatedAt?: Timestamp | null;
+  createdAt?: Timestamp | FieldValue | null;
+  updatedAt?: Timestamp | FieldValue | null;
 };
 
 // Notion連携情報を保存
