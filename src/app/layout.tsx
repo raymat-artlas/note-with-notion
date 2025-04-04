@@ -1,17 +1,6 @@
 'use client';
 
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function RootLayout({
   children,
@@ -24,8 +13,10 @@ export default function RootLayout({
         <title>note with Notion</title>
         <meta name="description" content="noteで見つけた情報をNotionに整理" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+      <body className="antialiased">
+        <div className="min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );
