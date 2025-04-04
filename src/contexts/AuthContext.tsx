@@ -19,12 +19,12 @@ declare global {
 }
 
 interface AuthContextType {
-  currentUser: User | null;
+  user: User | null;
   loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  currentUser: null,
+  user: null,
   loading: true,
 });
 
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, loading }}>
+    <AuthContext.Provider value={{ user: currentUser, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );
