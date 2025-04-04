@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (typeof chrome !== 'undefined' && chrome.storage) {
             chrome.storage.local.set({ uid: user.uid });
           }
-        } catch (_e) {
+        } catch {
           console.log('Chrome拡張機能APIが利用できません (通常のブラウザ環境での実行時は無視してください)');
         }
       } else {
@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (typeof chrome !== 'undefined' && chrome.storage) {
             chrome.storage.local.remove('uid');
           }
-        } catch (_e) {
+        } catch {
           console.log('Chrome拡張機能APIが利用できません (通常のブラウザ環境での実行時は無視してください)');
         }
       }
