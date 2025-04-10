@@ -3,14 +3,7 @@ import { stripe } from '@/lib/stripe/config';
 import { adminDb } from '@/lib/firebase/admin';
 import { headers } from 'next/headers';
 
-// 古い設定（これを削除）
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-// 新しい設定（これに置き換える）
+// 新しい設定のみを使用
 export const dynamic = 'force-dynamic';
 // webhookがraw bodyを処理できるようにする
 export const bodyParser = false;
