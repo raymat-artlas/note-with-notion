@@ -1,0 +1,210 @@
+/* モダンでミニマルなUIスタイル */
+:root {
+  --primary: #4f46e5;
+  --primary-light: #eef2ff;
+  --primary-dark: #3730a3;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --background: #ffffff;
+  --border: #e5e7eb;
+  --success: #059669;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+body {
+  width: 320px;
+  color: var(--text);
+  background-color: var(--background);
+}
+
+.container {
+  padding: 1.25rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+  margin-right: 0.75rem;
+}
+
+h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: var(--primary-light);
+  border-radius: 0.5rem;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: white;
+  font-weight: 600;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.user-details {
+  overflow: hidden;
+}
+
+.user-details p {
+  margin: 0;
+  font-size: 0.813rem;
+}
+
+#user-email {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--primary);
+}
+
+/* プラン情報 */
+.plan-info {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.plan-badge {
+  display: inline-block;
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+#upgrade-button {
+  width: 100%;
+  background-color: var(--success);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  font-size: 0.813rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+#upgrade-button:hover {
+  opacity: 0.9;
+}
+
+#upgrade-button svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: 0.375rem;
+}
+
+/* ボタン */
+.buttons {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.813rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.button svg {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+.button.primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.button.primary:hover {
+  opacity: 0.9;
+}
+
+.button.secondary {
+  background-color: var(--primary-light);
+  color: var(--text);
+}
+
+.button.secondary:hover {
+  opacity: 0.9;
+}
+
+.button.outline {
+  background-color: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.button.outline:hover {
+  background-color: var(--primary-light);
+}
+
+.footer {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.688rem;
+  color: var(--text-light);
+}
+
+/* 通知 */
+.notification {
+  position: fixed;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.625rem 0.875rem;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 0.25rem;
+  font-size: 0.813rem;
+  z-index: 100;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -0.625rem); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+} 

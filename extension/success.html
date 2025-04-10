@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ご購入ありがとうございます - Note with Notion</title>
+  <link rel="stylesheet" href="success.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* インラインスタイルを追加して確実に表示されるようにする */
+    body {
+      font-family: 'Segoe UI', -apple-system, Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .success-card {
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    .check-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 30px;
+      background-color: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 40px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .order-details {
+      margin: 30px 0;
+      text-align: left;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .button {
+      background-color: #6366f1;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.2s;
+    }
+    .button:hover {
+      background-color: #4f46e5;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-card">
+    <div class="check-icon">✓</div>
+    <h1>ご購入ありがとうございます！</h1>
+    <p>Note with Notionのプレミアムプランが有効になりました。</p>
+    
+    <div class="order-details">
+      <h2>注文詳細</h2>
+      <div class="info-row">
+        <span>プラン:</span>
+        <span id="plan-name">プレミアム</span>
+      </div>
+      <div class="info-row">
+        <span>金額:</span>
+        <span id="plan-price">¥500 / 月</span>
+      </div>
+      <div class="info-row">
+        <span>ステータス:</span>
+        <span>アクティブ</span>
+      </div>
+    </div>
+    
+    <p>すぐにすべての機能をご利用いただけます。</p>
+
+    <div class="action-buttons">
+      <button class="button primary" id="go-to-dashboard">マイページを開く</button>
+      <button class="button secondary" id="back-to-home">ホームに戻る</button>
+    </div>
+  </div>
+
+  <script>
+    // インラインスクリプトを追加して確実に動作するようにする
+    document.addEventListener('DOMContentLoaded', function() {
+      // URLからセッションIDを取得
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get('session_id');
+      
+      // セッションIDがある場合は情報を取得
+      if (sessionId) {
+        console.log('セッションID:', sessionId);
+        
+        // サーバーからセッション情報を取得（オプション）
+        fetch(`/api/checkout-session?session_id=${sessionId}`)
+          .then(response => response.json())
+          .then(data => {
+            console.log('セッション情報:', data);
+            if (data.subscription) {
+              updateOrderInfo(data);
+            }
+          })
+          .catch(error => {
+            console.error('エラー:', error);
+          });
+      }
+      
+      // マイページボタン
+      document.getElementById('go-to-dashboard').addEventListener('click', function() {
+        // Webサイトのマイページに移動（本番のURLに変更する）
+        window.location.href = 'https://note-with-notion.vercel.app/dashboard';
+      });
+      
+      // ホームに戻るボタン
+      document.getElementById('back-to-home').addEventListener('click', function() {
+        // Webサイトのホーム画面に移動
+        window.location.href = 'https://note-with-notion.vercel.app/';
+      });
+      
+      // 注文情報を更新
+      function updateOrderInfo(data) {
+        if (data && data.subscription) {
+          const planName = document.getElementById('plan-name');
+          const planPrice = document.getElementById('plan-price');
+          
+          // プラン名を設定
+          if (data.subscription.plan.nickname) {
+            planName.textContent = data.subscription.plan.nickname;
+          }
+          
+          // プラン金額を設定
+          if (data.subscription.plan.amount) {
+            const amount = data.subscription.plan.amount / 100;
+            const interval = data.subscription.plan.interval === 'year' ? '年' : '月';
+            planPrice.textContent = `¥${amount} / ${interval}`;
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html> 

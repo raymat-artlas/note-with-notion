@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>note with Notion</title>
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Firebase SDK参照を削除 -->
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="../icons/icon48.png" alt="ロゴ" class="logo">
+      <h1>note with Notion</h1>
+    </div>
+    
+    <div class="user-info">
+      <div class="avatar">R</div>
+      <div class="user-details">
+        <p id="user-name">ようこそ</p>
+        <p id="user-email">ray.matsuura.01@gmail.com</p>
+      </div>
+    </div>
+    
+    <div class="plan-info">
+      <div class="plan-badge" id="current-plan">無料プラン</div>
+      <button id="upgrade-button" class="button accent">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/>
+        </svg>
+        プランをアップグレード
+      </button>
+    </div>
+    
+    <div class="buttons">
+      <button id="dashboard-button" class="button primary">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+        </svg>
+        マイページを開く
+      </button>
+      
+      <button id="website-button" class="button secondary">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Webサイトを開く
+      </button>
+      
+      <button id="pricing-button" class="button secondary">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+        </svg>
+        料金プランを見る
+      </button>
+      
+      <button id="logout-button" class="button outline">
+        <svg viewBox="0 0 24 24" class="icon">
+          <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+        </svg>
+        ログアウト
+      </button>
+    </div>
+    
+    <div class="footer">
+      <p>© 2023 note with Notion</p>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 

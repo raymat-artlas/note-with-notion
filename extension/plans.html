@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>料金プラン - Note with Notion</title>
+  <link rel="stylesheet" href="plans.css">
+</head>
+<body>
+  <div class="container">
+    <h1>料金プラン</h1>
+    
+    <!-- 課金周期タブ（上部配置） -->
+    <div class="billing-toggle">
+      <div class="toggle-container">
+        <button class="toggle-button active" data-billing="month">月額プラン</button>
+        <button class="toggle-button" data-billing="year">年額プラン<span class="save-tag">20%お得</span></button>
+      </div>
+    </div>
+    
+    <!-- プランカード - タブ切り替えで内容変更 -->
+    <div class="plans-container" id="plans-wrapper">
+      <div class="plan">
+        <div class="plan-header">
+          <h2>無料</h2>
+          <div class="plan-price" id="free-price">
+            <span class="amount">¥0</span>
+            <span class="period">/月</span>
+          </div>
+          <div class="plan-description">
+            基本的なNotion連携
+          </div>
+        </div>
+        <div class="plan-features">
+          <ul>
+            <li>ハイライト部分の保存（ハイライトDB）</li>
+            <li>タグの追加・設定</li>
+            <li class="unavailable">メモの追加</li>
+            <li class="unavailable">著者情報取得・リンク</li>
+            <li class="unavailable">note情報ページ作成・リンク</li>
+            <li class="unavailable">複数端末連携</li>
+          </ul>
+        </div>
+        <button class="plan-button current">現在のプラン</button>
+      </div>
+      
+      <div class="plan featured">
+        <div class="popular-badge">人気</div>
+        <div class="plan-header">
+          <h2>プレミアム</h2>
+          <div class="plan-price" id="premium-price">
+            <span class="amount">¥500</span>
+            <span class="period">/月</span>
+          </div>
+          <div class="plan-description">
+            Notion連携を最大限活用
+          </div>
+        </div>
+        <div class="plan-features">
+          <ul>
+            <li>ハイライト部分の保存（ハイライトDB）</li>
+            <li>タグの追加・設定</li>
+            <li>メモの追加</li>
+            <li>著者情報取得ページ作成・リンク</li>
+            <li>note情報ページ作成・リンク</li>
+            <li>アカウント作成による複数端末連携</li>
+          </ul>
+        </div>
+        <button class="plan-button upgrade">アップグレード</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="plans.js"></script>
+</body>
+</html> 

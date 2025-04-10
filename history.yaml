@@ -1,0 +1,115 @@
+- date: 2023-11-30
+  author: raymat
+  context: Firebase 認証が拡張機能から動かないバグ
+  cause: 拡張機能のAPIリクエストでJSONパースエラーが発生していた
+  fix: バックグラウンドスクリプトの認証処理とAPIエンドポイントを修正し、正しいJSONレスポンスを返すようにした
+  impact: 拡張機能からログインできるようになり、認証フローが完成
+
+- date: 2023-11-30
+  author: raymat
+  context: Next.jsルーティングエラー
+  cause: /loginに解決される重複したページファイルが存在していた
+  fix: src/app/login/page.tsxを削除し、(auth)グループ内のページのみを残した
+  impact: アプリケーションが正常に起動し、ログインページが正しく表示されるようになった
+
+- date: 2023-11-30
+  author: raymat
+  context: Firebase Admin SDK設定エラー
+  cause: Firebase Admin SDKに必要な環境変数(.env.local)が不足していた
+  fix: Firebase Consoleからサービスアカウントキーを取得し、必要な環境変数を.env.localに追加
+  impact: サーバーサイドでFirebase認証と操作が可能になり、APIが正常に動作するようになった
+
+- date: 2023-11-30
+  author: raymat
+  context: ページの重複とルーティングエラー
+  cause: 同じパスを指すページファイルが複数存在していた（/src/app/pricingと/src/app/(main)/pricing）
+  fix: 重複するページファイルを削除し、ルーティングを整理
+  impact: アプリケーションのルーティングが正常に機能するようになった
+  notes: |
+    - Next.jsのApp Routerでは同じパスに解決されるページを複数作成しないこと
+    - 特にグループフォルダ(())を使用する場合は注意が必要
+    - 新しいページを作成する前に既存のルーティング構造を確認すること
+
+- date: 2023-11-30
+  author: raymat
+  context: サインアップ機能のエラー
+  cause: AuthContextから認証関数が削除され、signupページでそれらを参照していた
+  fix: サインアップページでFirebaseの認証関数を直接使用するように修正
+  impact: ユーザー登録機能が正常に動作するようになった
+
+- date: 2023-12-01
+  author: raymat
+  context: ログイン機能のエラー修正
+  cause: AuthContextから認証関数が削除され、ログインページでそれらを参照していた
+  fix: ログインページでFirebaseの認証関数を直接使用するように修正
+  impact: ユーザーがログインできるようになり、サブスクリプション購入フローも正常に動作するようになった
+  notes: |
+    - サインアップとログインの両方で同様の修正パターンを適用
+    - リダイレクトクエリパラメータを活用して、意図した遷移フローを維持
+
+- date: 2023-12-01
+  author: raymat
+  context: ログインリダイレクト処理の修正
+  cause: ログイン後のリダイレクトが正しく動作せず、拡張機能とのメッセージングでエラーが発生
+  fix: |
+    - リダイレクトURLのエンコーディングを改善
+    - Next.jsのrouterではなくwindow.location.hrefを使用
+    - リダイレクト処理に遅延を追加
+  impact: ログイン後に正しくリダイレクトされ、Stripe決済フローが完了できるようになった
+
+- date: 2023-12-01
+  author: raymat
+  context: Stripe連携の環境変数名を最適化
+  cause: 環境変数名が分かりづらく、クライアント/サーバー間で統一されていなかった
+  fix: |
+    - 環境変数名を機能を表す命名規則に変更
+    - NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID, NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID, NEXT_PUBLIC_STRIPE_FREE_PRICE_IDに変更
+    - プラン選択ページと決済APIを更新
+  impact: 環境変数名が明確になり、将来的なメンテナンスが容易になった
+
+- date: 2023-12-01
+  author: raymat
+  context: Stripe連携の実装
+  cause: Stripeライブラリがプロジェクトに不足していた
+  fix: |
+    - stripeパッケージのインストール
+    - サーバー/クライアント側の設定ファイル作成
+    - Webhookハンドラーの実装
+  impact: Stripe決済フローが正常に機能するようになり、サブスクリプション管理が可能になった
+
+- date: 2023-12-02
+  author: raymat
+  context: Stripe APIキーの更新
+  cause: 古いAPIキーが無効か不正な形式だったため、Stripe APIの呼び出しが失敗していた
+  fix: |
+    - Stripeダッシュボードから新しいAPIキーを生成
+    - 環境変数を更新
+    - APIキー処理部分のコードを改善（クリーニング機能追加）
+  impact: Stripe決済フローが正常に動作するようになり、ユーザーがサブスクリプションを購入できるようになった
+
+stripe_implementation:
+  success_factors:
+    - サーバー側の適切なエラーハンドリング: 詳細なエラーログと環境変数チェックの実装
+    - クライアント・サーバー間の正しいデータ連携: JSON形式での通信とヘッダー設定
+    - モード切替機能の正しい実装: 月額/年額プランの切り替えとUI連動
+    - デザインの段階的改善: ユーザビリティを考慮したインタラクション設計
+    - Webhook実装: Stripe決済イベントの適切な処理
+
+  key_components:
+    server:
+      - express.jsサーバーの構築
+      - Stripe APIの適切な初期化
+      - セッション作成エンドポイントの実装
+      - Webhookエンドポイントの実装
+    
+    client:
+      - 料金プランUI実装（Pricing Table Pattern）
+      - 課金周期切替タブの実装
+      - アップグレードボタンのイベント処理
+      - 決済ページへのリダイレクト処理
+      
+  lessons_learned:
+    - 環境変数の重要性: 開発初期段階からの環境変数チェック
+    - エラーハンドリングの重要性: 詳細なエラーメッセージの表示
+    - UIデザインパターンの活用: 標準的なプライシングテーブルパターンの採用
+    - セキュリティ考慮: クライアント側での最小限の情報処理 
