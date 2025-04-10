@@ -3,12 +3,17 @@ import { stripe } from '@/lib/stripe/config';
 import { adminDb } from '@/lib/firebase/admin';
 import { headers } from 'next/headers';
 
-// POSTリクエストのボディパーサーを無効化（Stripeのwebhookには生のボディが必要）
+// 古い設定（これを削除）
 export const config = {
   api: {
     bodyParser: false,
   },
 };
+
+// 新しい設定（これに置き換える）
+export const dynamic = 'force-dynamic';
+// webhookがraw bodyを処理できるようにする
+export const bodyParser = false;
 
 export async function POST(request: Request) {
   const body = await request.text();
