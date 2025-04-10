@@ -15,3 +15,15 @@
        - src/app/plans/page.tsx
        - src/app/(protected)/dashboard/page.tsx（リダイレクト設定済み）
   notes: Next.jsのルートグループ機能を使用する場合、パスの重複に注意 
+
+- error: 削除したはずのファイルがビルド時に参照される
+  timestamp: 2023-10-01
+  cause: GitHubのリポジトリとVercelのビルド環境の同期問題
+  solution: |
+    1. 該当ファイルを明示的に再削除する
+       git rm -f src/app/plans/page.tsx
+    2. コミットとプッシュを確認する
+       git commit -m "plans重複ページを完全に削除"
+       git push
+    3. Vercelのキャッシュをクリアする（必要に応じて）
+  notes: ファイル削除のコミットがVercelに正しく反映されていない場合がある 
