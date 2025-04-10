@@ -9,6 +9,17 @@ export const dynamic = 'force-dynamic';
 export const bodyParser = false;
 
 export async function POST(request: Request) {
+  // 一時的に単純なレスポンスを返す
+  return new Response(JSON.stringify({ 
+    status: 'success', 
+    message: 'Webhook handling temporarily disabled'
+  }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+  
+  // 以下のコードはコメントアウト
+  /*
   const body = await request.text();
   const signature = headers().get('stripe-signature') || '';
   
@@ -89,4 +100,5 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
+  */
 } 

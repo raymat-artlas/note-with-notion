@@ -1,0 +1,17 @@
+- error: TailwindCSS依存関係エラー
+  timestamp: 2023-10-01
+  cause: Tailwind CSSの依存関係モジュールが見つからない
+  solution: |
+    1. package.jsonに正しい依存関係を追加：
+       npm install -D tailwindcss postcss autoprefixer
+    2. postcss.config.jsを正しく設定
+  notes: Next.js 14.2.28ではTailwindCSSの設定方法が変更されている
+
+- error: 重複ページパス
+  timestamp: 2023-10-01
+  cause: 同じURLに解決される複数のページファイルが存在
+  solution: |
+    1. 重複しているページを削除
+       - src/app/plans/page.tsx
+       - src/app/(protected)/dashboard/page.tsx（リダイレクト設定済み）
+  notes: Next.jsのルートグループ機能を使用する場合、パスの重複に注意 

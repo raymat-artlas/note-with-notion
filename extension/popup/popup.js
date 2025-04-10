@@ -69,22 +69,22 @@ function setupPlanInfo() {
 function setupButtonListeners() {
   // マイページを開くボタン
   document.getElementById('dashboard-button').addEventListener('click', function() {
-    chrome.tabs.create({ url: 'https://あなたのプロジェクト名.vercel.app/dashboard' });
+    chrome.tabs.create({ url: 'https://あなたのドメイン.vercel.app/dashboard' });
   });
   
   // Webサイトを開くボタン
   document.getElementById('website-button').addEventListener('click', function() {
-    chrome.tabs.create({ url: 'https://あなたのプロジェクト名.vercel.app/' });
+    chrome.tabs.create({ url: 'https://あなたのドメイン.vercel.app/' });
   });
   
   // 料金プランを見るボタン
   document.getElementById('pricing-button').addEventListener('click', function() {
-    chrome.tabs.create({ url: 'https://あなたのプロジェクト名.vercel.app/pricing' });
+    chrome.tabs.create({ url: 'https://あなたのドメイン.vercel.app/pricing' });
   });
   
   // アップグレードボタン
   document.getElementById('upgrade-button').addEventListener('click', function() {
-    chrome.tabs.create({ url: 'https://あなたのプロジェクト名.vercel.app/pricing?upgrade=true' });
+    chrome.tabs.create({ url: 'https://あなたのドメイン.vercel.app/pricing?upgrade=true' });
   });
   
   // ログアウトボタン

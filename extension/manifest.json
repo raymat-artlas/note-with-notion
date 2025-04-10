@@ -23,7 +23,7 @@
     "tabs"
   ],
   "host_permissions": [
-    "https://あなたのプロジェクト名.vercel.app/*"
+    "https://note-with-notion-xxxxx.vercel.app/*"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
