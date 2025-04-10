@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 // firebase/authモジュールから直接インポートを避け、カスタムFirebaseモジュールを使用
-import { auth } from '@/lib/firebase/firebase.js';
+import { auth } from '@/lib/firebase/client';
 // 必要な型定義だけをインポート
 import type { User as FirebaseUser } from 'firebase/auth';
 

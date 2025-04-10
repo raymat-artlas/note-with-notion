@@ -1,7 +1,8 @@
-@import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 以下、カスタムCSSを追加 */
 
 :root {
   --background: #ffffff;

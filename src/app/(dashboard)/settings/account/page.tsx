@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { getUserData } from '@/lib/firebase/users';
-import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase/config';
+import { getFirestore, doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase/client';
 
 export default function AccountSettings() {
   const { user, logout } = useAuth();
