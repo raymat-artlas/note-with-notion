@@ -5,7 +5,4 @@
 import app, { auth, db } from './client';
 
 export { auth, db };
-export default app;
-
-// デフォルトとして config をエクスポート
-export { default } from './config'; 
+export default app; 
