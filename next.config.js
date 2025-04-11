@@ -11,12 +11,8 @@ const nextConfig = {
     // チャンク読み込みの問題を修正
     optimizePackageImports: ['react', 'react-dom', 'next'],
     
-    // キャッシュ関連の問題を修正
+    // Firebaseパッケージを外部化
     serverComponentsExternalPackages: ['firebase', '@firebase/auth'],
-    
-    // 動的なAPIルートの処理
-    runtime: 'nodejs',
-    serverComponents: true,
   },
   
   images: {
@@ -96,7 +92,7 @@ const nextConfig = {
   },
   transpilePackages: ['@firebase/app', '@firebase/firestore'],
   
-  // ESLintチェックを一時的にオフにする
+  // エラーチェックを一時的に無効化
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -106,7 +102,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   
-  output: 'standalone',  // 'export'ではなく'standalone'を使う
+  output: 'standalone',  // 'export'ではなく'standalone'を使用
 };
 
 module.exports = nextConfig;

@@ -144,4 +144,108 @@ errors:
     cause: "Unsupported Server Component type: {...}が多数発生"
     solution: "クライアントコンポーネントとサーバーコンポーネントの区別を明確にする"
     details: "コンポーネントの使用方法がNext.jsの期待する形式と異なる"
-    note: "use clientディレクティブの適切な配置を確認" 
+    note: "use clientディレクティブの適切な配置を確認"
+
+- error: Next.js設定エラー
+  timestamp: 2025-04-11
+  cause: next.config.jsで無効なオプション「runtime」「serverComponents」が使用されている
+  solution: |
+    次のように不要なオプションを削除する:
+    ```javascript
+    /** @type {import('next').NextConfig} */
+    const nextConfig = {
+      reactStrictMode: true,
+      swcMinify: true,
+      
+      experimental: {
+        // 不要なオプションを削除
+        optimizeCss: false,
+        optimizePackageImports: ['react', 'react-dom', 'next'],
+        serverComponentsExternalPackages: ['firebase', '@firebase/auth'],
+      },
+      
+      // ESLintとTypeScriptチェックはそのまま
+      eslint: {
+        ignoreDuringBuilds: true,
+      },
+      typescript: {
+        ignoreBuildErrors: true,
+      },
+      
+      output: 'standalone',
+    };
+    ```
+  notes: "Next.js 14.2.28では一部の実験的オプションが変更または削除されています"
+
+- error: Stripe決済処理エラー
+  timestamp: 2025-04-11
+  cause: ライン項目にpriceまたはprice_dataが設定されていない
+  solution: |
+    src/app/api/stripe/annual-session/route.tsを修正：
+    ```typescript
+    // 正しい環境変数名を確認
+    const priceId = process.env.STRIPE_PRICE_ID_ANNUAL;
+    
+    // 価格IDのチェックを追加
+    if (!priceId) {
+      console.error('Stripe API: 価格IDが設定されていません');
+      return NextResponse.json(
+        { error: '価格IDが設定されていません' },
+        { status: 400 }
+      );
+    }
+    
+    // line_itemsにpriceを明示的に指定
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: priceId, // ここが重要
+          quantity: 1,
+        },
+      ],
+      mode: 'subscription',
+      success_url: `${process.env.NEXT_PUBLIC_API_URL}/dashboard?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_API_URL}/plans?canceled=true`,
+    });
+    ```
+  notes: "本番環境ではVercelの環境変数設定でSTRIPE_PRICE_ID_ANNUALを設定する必要があります"
+
+- error: サーバーコンポーネントエラー
+  timestamp: 2025-04-11
+  cause: クライアントコンポーネントとサーバーコンポーネントの混在
+  solution: |
+    1. 'use client' ディレクティブを適切に配置
+    2. AuthContextなどのクライアントコンポーネントは専用のプロバイダーで分離
+    3. ClientLayoutコンポーネントを実装：
+    ```typescript
+    // src/components/ClientLayout.tsx
+    'use client';
+    
+    import { ReactNode } from 'react';
+    import { AuthProvider } from '@/context/AuthContext';
+    
+    export default function ClientLayout({ children }: { children: ReactNode }) {
+      return <AuthProvider>{children}</AuthProvider>;
+    }
+    ```
+  notes: "Next.js 14では、サーバーコンポーネントとクライアントコンポーネントの区別がより厳格になっています"
+
+- error: 動的APIルートエラー
+  timestamp: 2025-04-11
+  cause: 静的生成時にrequest.headersを使用している
+  solution: |
+    1. APIルートを静的に生成しないようにする：
+    ```typescript
+    // 各APIルートファイルの先頭に追加
+    export const dynamic = 'force-dynamic';
+    ```
+    
+    2. または、ミドルウェアでAPIルートへのリクエストを処理：
+    ```typescript
+    // middleware.ts
+    export const config = {
+      matcher: ['/api/:path*']
+    };
+    ```
+  notes: "APIルート（特に認証が必要なもの）は通常force-dynamicに設定すべきです" 

@@ -109,32 +109,25 @@ export const planFeatures: Record<string, PlanFeature[]> = {
   ]
 };
 
-export function getPlanDetails(planType: string) {
-  switch (planType) {
-    case PLANS.FREE:
-      return {
-        name: '無料プラン',
-        description: '試用目的・シンプル機能',
-        price: 0,
-        priceId: process.env.STRIPE_PRICE_ID_FREE || '',
-        features: planFeatures[PLANS.FREE]
-      };
+export function getPlanDetails(planId: string) {
+  switch (planId) {
     case PLANS.MONTHLY:
       return {
-        name: 'プレミアムプラン（月額）',
-        description: '知識管理をさらに快適に',
-        price: 500,
-        priceId: process.env.STRIPE_PRICE_ID_MONTHLY || '',
+        name: '月額プラン',
+        description: '月ごとの支払い',
+        price: 980,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID,
         features: planFeatures[PLANS.MONTHLY]
       };
     case PLANS.ANNUAL:
       return {
-        name: 'プレミアムプラン（年額）',
-        description: '年間契約でお得に',
-        price: 4800,
-        priceId: process.env.STRIPE_PRICE_ID_ANNUAL || '',
+        name: '年間プラン',
+        description: '年ごとの支払い（2ヶ月分お得）',
+        price: 9800,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID,
         features: planFeatures[PLANS.ANNUAL]
       };
+    case PLANS.FREE:
     default:
       return {
         name: '無料プラン',
