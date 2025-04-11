@@ -100,6 +100,18 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  
+  output: 'standalone',  // サーバーコンポーネントとAPIルートを両立させるため
+
+  // APIルートをSSGから除外
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/api/:path*',
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
