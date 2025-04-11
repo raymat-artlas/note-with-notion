@@ -353,3 +353,12 @@ errors:
     2. ルート「/」は一方のみが処理するよう設定
     3. 暫定的な措置として重要ページをすべてPages Routerに移行
   details: "Next.js 14では同じパスにApp RouterとPages Routerの両方があると競合が発生する"
+
+- error: 残存するApp Routerファイル参照の問題
+  timestamp: 2024-04-11
+  cause: "App Routerのファイル(main)/pageへの参照が残っているためコピーエラー発生"
+  solution: |
+    1. src/app/(main)ディレクトリを完全に削除
+    2. src/appディレクトリのルーティング設定をシンプル化
+    3. appディレクトリからの参照を完全にクリーンアップ
+  details: "App RouterとPages Routerの混在環境でビルド時に不要なファイル参照が残っている"

@@ -3,17 +3,10 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // SSRモードを強制
+  // SSR強制モード
   output: 'standalone',
   
-  // SSR最適化設定
-  poweredByHeader: false,
-  generateEtags: false,
-  
-  // ハイブリッドモード設定
-  pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
-  
-  // App Routerを許可しつつ、Pages Routerを優先
+  // Pages Routerを優先
   experimental: {
     // サーバーアクションの設定
     serverActions: {
@@ -21,7 +14,7 @@ const nextConfig = {
     }
   },
   
-  // 画像ドメイン設定
+  // 画像設定
   images: {
     domains: ['lh3.googleusercontent.com', 'firebasestorage.googleapis.com'],
   },
