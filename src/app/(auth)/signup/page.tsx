@@ -7,6 +7,9 @@ import Image from 'next/image';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase/client';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export default function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

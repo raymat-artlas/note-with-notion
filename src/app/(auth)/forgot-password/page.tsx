@@ -7,6 +7,9 @@ import { FirebaseError } from 'firebase/app';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/lib/firebase/client';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');

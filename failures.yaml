@@ -289,3 +289,13 @@ errors:
     2. 各ページファイルに`export const dynamic = 'force-dynamic'`を追加
     3. vercel.jsonファイルでSSRモードを明示的に設定
   details: "Element type is invalid: expected a string but got: undefined"
+
+- error: Next.js出力モード設定エラー
+  timestamp: 2024-04-11
+  cause: "出力モード'server'が無効: 'Expected standalone | export, received server at output'"
+  solution: |
+    正しいNext.js設定に修正:
+    1. outputを'server'から'standalone'に変更
+    2. 全ページで動的レンダリングを強制
+    3. コンポーネントのクライアント/サーバー分離を徹底
+  details: "現在のNext.jsバージョンでは'server'出力モードがサポートされていない"

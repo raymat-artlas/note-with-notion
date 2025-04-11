@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   
   // 静的生成モードを無効化し、サーバーサイドレンダリングを強制
-  output: 'server',
+  output: 'standalone',
   
   experimental: {
     // ハイドレーションの対応強化
