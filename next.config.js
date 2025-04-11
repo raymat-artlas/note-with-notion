@@ -102,8 +102,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   
-  output: 'server',  // サーバーコンポーネントとAPIルートを両立させるため
-
+  output: 'standalone',  // 'server'ではなく'standalone'を使う
+  
   // APIルートをSSGから除外
   async rewrites() {
     return [
@@ -113,6 +113,16 @@ const nextConfig = {
       },
     ];
   },
+  
+  // 静的生成を無効化し、すべてSSRモードに
+  trailingSlash: false,
+  
+  // 認証関連ページを静的生成から除外
+  unstable_excludeFiles: [
+    '/(auth)/**/*',
+    '/(dashboard)/**/*',
+    '/api/**/*'
+  ],
 };
 
 module.exports = nextConfig;

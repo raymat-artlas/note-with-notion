@@ -99,3 +99,21 @@ errors:
     cause: "「Invalid URL: undefined/dashboard?success=true」エラー発生"
     solution: "環境変数NEXT_PUBLIC_URLの設定確認と適切なフォールバック処理の追加"
     details: "ビルド時に環境変数が正しく読み込まれていない" 
+
+  - name: "Next.js設定値の無効なオプション"
+    date: "2024-04-11"
+    cause: "output: 'server'は無効なオプションが指定されている"
+    solution: "Next.jsの有効なoutput値（'standalone'または'export'）に修正"
+    details: "Next.js 14.2では'server'はoutputとして認識されないため設定エラーが発生"
+    
+  - name: "Firebaseコンポーネント初期化エラー"
+    date: "2024-04-11"
+    cause: "静的生成時のFirebase Auth初期化で「Component auth has not been registered yet」エラー"
+    solution: "静的生成対象からFirebaseを使うページを除外するか、動的インポートに変更"
+    details: "サーバーサイドでのFirebase Auth初期化順序が不適切" 
+
+  - name: "Stripe URL処理の詳細問題"
+    date: "2024-04-11"
+    cause: "StripeセッションURLがhttp/httpsで始まらない（undefined/dashboard?success=true）"
+    solution: "環境変数の読み込みタイミングとチェックポイントの追加"
+    details: "ビルド時とランタイム時で環境変数の挙動が異なり、Stripe処理時に値が正しく取得できていない" 
