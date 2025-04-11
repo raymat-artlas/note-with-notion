@@ -89,7 +89,7 @@ const nextConfig = {
       },
     ];
   },
-  transpilePackages: ['firebase', '@firebase/app', '@firebase/auth', '@firebase/firestore'],
+  transpilePackages: ['@firebase/app', '@firebase/firestore'],
   
   // ESLintチェックを一時的にオフにする
   eslint: {

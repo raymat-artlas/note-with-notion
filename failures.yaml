@@ -75,3 +75,9 @@ errors:
     cause: "「Invalid URL: undefined/dashboard?success=true. URLsは http または https で始まる必要がある」"
     solution: "環境変数NEXT_PUBLIC_URLが常に設定されるよう修正"
     details: "Vercel環境で環境変数が正しく読み込まれていないか、条件分岐が適切に機能していない" 
+
+  - name: "exportPathMap互換性エラー"
+    date: "2024-04-11"
+    cause: "App Routerでは「exportPathMap」設定が使用できない"
+    solution: "next.config.jsから「exportPathMap」を削除し、別の方法で認証ページを処理"
+    details: "Next.jsのApp Routerでは「generateStaticParams()」を使用する必要がある" 
