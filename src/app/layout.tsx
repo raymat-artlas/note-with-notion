@@ -33,10 +33,9 @@ export default function RootLayout({
         <Suspense fallback={<div>Loading...</div>}>
           <Header />
           <main className="min-h-screen">
-            <ClientLayout />
-            <div id="root">
+            <ClientLayout>
               {children}
-            </div>
+            </ClientLayout>
           </main>
         </Suspense>
         <div id="loading" className="loading" style={{ display: 'none' }}>

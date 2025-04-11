@@ -13,10 +13,15 @@ const nextConfig = {
     
     // Firebaseパッケージを外部化
     serverComponentsExternalPackages: ['firebase', '@firebase/auth'],
+    
+    // サポートされていない設定を削除
+    serverActions: true,
   },
   
   images: {
     domains: ['lh3.googleusercontent.com', 'firebasestorage.googleapis.com'],
+    // staticモードでは外部画像をunoptimizedに設定
+    unoptimized: true,
   },
   
   // 環境変数を明示的に公開

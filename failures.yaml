@@ -260,3 +260,13 @@ errors:
     
     どちらかを削除するか、パスを変更する必要があります。
   details: "Next.jsのルートグループ（括弧で囲まれた部分）はURLパスには影響しないため" 
+
+- error: サーバーコンポーネントの静的レンダリング失敗
+  timestamp: 2024-04-11
+  cause: クライアントコンポーネントとサーバーコンポーネントの混在による静的生成エラー
+  solution: |
+    静的生成からSSRモードに切り替える：
+    1. next.config.jsの設定変更
+    2. すべてのAPIルートに force-dynamic 設定を追加
+    3. Authコンポーネントの適切なクライアント/サーバー分離
+  details: "多数の 'Unsupported Server Component type: {...}' エラーが発生" 
