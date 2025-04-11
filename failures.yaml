@@ -381,3 +381,14 @@ errors:
     2. ダブルクォートを使用: rm -rf "src/app/(main)"
     3. バックスラッシュでエスケープ: rm -rf src/app/\(main\)
   details: "zshシェルでは括弧()はグロブパターンの特殊文字として解釈されるため文字列としての扱いに注意が必要"
+
+- error: リダイレクトループ問題
+  timestamp: 2024-04-11
+  cause: "App RouterとPages Routerの混在によりリダイレクトループが発生"
+  solution: |
+    1. リダイレクト判定条件を追加:
+       - リダイレクト回数を制限するためのクエリパラメータを追加
+       - ミドルウェアでリダイレクト検出と防止
+    2. 一時的な緊急対策:
+       - src/app/page.tsxのリダイレクト処理を無効化
+  details: "App RouterがPages Routerにリダイレクトし、循環参照が発生している"

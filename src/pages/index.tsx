@@ -1,20 +1,37 @@
 // Pages Router版のトップページ (SSRモード)
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import Head from 'next/head';
 import { FaChrome, FaCheck, FaGlobe, FaStickyNote, FaBookmark, FaDatabase } from 'react-icons/fa';
 
 // SSRを強制
-export const getServerSideProps = async () => {
+export const getServerSideProps = async ({ query }) => {
+  // リダイレクトループの防止
+  const hasRedirectParam = Boolean(query._r);
+  
   return {
     props: {
-      serverTime: new Date().toISOString()
+      serverTime: new Date().toISOString(),
+      hasRedirectParam
     }
   };
 };
 
-export default function HomePage({ serverTime }) {
+export default function HomePage({ serverTime, hasRedirectParam }) {
+  const router = useRouter();
+  
+  // リダイレクトループ防止
+  useEffect(() => {
+    // クエリパラメータがすでにある場合は、クリーンURLにする
+    if (hasRedirectParam) {
+      // クリーンURLにするために、履歴を置き換える
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+  }, [hasRedirectParam]);
+  
   return (
     <>
       <Head>

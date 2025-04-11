@@ -9,12 +9,22 @@ export function middleware(request: NextRequest) {
   response.headers.set('x-middleware-cache', 'no-cache');
   response.headers.set('Cache-Control', 'no-store, max-age=0');
   
-  // App RouterとPages Routerの混在時に明示的な優先順位を設定
-  // Pages RouterをApp Routerより優先
+  // リダイレクトループを防止するチェック（クエリパラメータを検証）
   const url = request.nextUrl.clone();
-  if (url.pathname === '/' || url.pathname === '/index') {
-    // ルートパスはPages Routerで処理
+  const hasRedirectParam = url.searchParams.has('_r');
+  
+  // リダイレクトループ防止
+  if (hasRedirectParam) {
+    // すでにリダイレクトされている場合は何もしない
     return response;
+  }
+  
+  // App RouterとPages Routerのルーティング競合を解決
+  // トップページはPages Routerで処理
+  if (url.pathname === '/' || url.pathname === '/index') {
+    // リダイレクトループを避けるためにパラメータを追加
+    url.searchParams.set('_r', '1');
+    return NextResponse.redirect(url);
   }
   
   return response;
