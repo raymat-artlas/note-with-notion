@@ -322,3 +322,13 @@ errors:
     2. 静的生成時の問題をバイパスするapp/_document.jsxを追加
     3. 環境変数でOPTIONAL_COMPONENT_CACHE=falseを設定
   details: "サーバーコンポーネントとクライアントコンポーネントが混在した状態で静的生成を試行するとエラー発生"
+
+- error: ルートページのプリレンダリング（静的生成）エラー
+  timestamp: 2024-04-11
+  cause: "TypeError: Cannot read properties of undefined (reading 'clientModules')"
+  solution: |
+    1. すべての静的生成を無効にしてフルSSRモードに変更：
+       - next.config.jsにexportConfigを追加
+       - コンポーネントツリー全体が動的レンダリングされるよう設定
+    2. 重要なページにサーバーコンポーネントを使用
+  details: "Next.js 14.2のApp Router環境で複雑なコンポーネント構造の静的生成に互換性問題が発生"

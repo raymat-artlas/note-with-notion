@@ -4,6 +4,7 @@ import './globals.css';
 import { Suspense } from 'react';
 import Header from '@/components/Header';
 import ClientLayout from '@/components/ClientLayout';
+import { dynamic, revalidate, fetchCache, runtime } from './config';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,8 +17,7 @@ export function reportWebVitals(metric) {
   console.log('Web Vitals:', metric);
 }
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export { dynamic, revalidate, fetchCache, runtime };
 
 export default function RootLayout({
   children,

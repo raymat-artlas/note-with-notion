@@ -12,14 +12,32 @@ const nextConfig = {
   // キャッシュを無効化
   generateEtags: false,
   
+  // すべてのページでSSRを強制
+  exportConfig: {
+    disableStaticGeneration: true,
+  },
+  
+  // ビルドを強制的にSSRモードに
+  trailingSlash: false,
+  
+  // 動的インポートを許可しつつ、静的解析を無効化
   experimental: {
     // ハイドレーションの対応強化
     optimizeCss: false,
     
-    // サーバーアクションの設定のみ残す
+    // サーバーアクションの設定
     serverActions: {
       allowedOrigins: ['localhost:3000', 'note-with-notion.vercel.app']
-    }
+    },
+    
+    // ページごとのルーティング設定を許可
+    allowedRevalidateHeaderKeys: ['*'],
+    
+    // バンドル最適化を無効化
+    forceSwcTransforms: true,
+    
+    // 静的生成を無効化
+    disableStaticGeneration: true
   },
   
   images: {

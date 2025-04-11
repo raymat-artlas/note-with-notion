@@ -13,12 +13,14 @@
   "env": {
     "NODE_ENV": "production",
     "NEXT_PUBLIC_FORCE_DYNAMIC": "true",
-    "OPTIONAL_COMPONENT_CACHE": "false"
+    "OPTIONAL_COMPONENT_CACHE": "false",
+    "NEXT_DISABLE_STRICT_EXPORT_VALIDATION": "true"
   },
   "build": {
     "env": {
       "NEXT_PUBLIC_FORCE_DYNAMIC": "true",
-      "OPTIONAL_COMPONENT_CACHE": "false"
+      "OPTIONAL_COMPONENT_CACHE": "false",
+      "NEXT_DISABLE_STRICT_EXPORT_VALIDATION": "true"
     }
   }
 } 
