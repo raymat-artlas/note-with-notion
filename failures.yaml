@@ -81,3 +81,21 @@ errors:
     cause: "App Routerでは「exportPathMap」設定が使用できない"
     solution: "next.config.jsから「exportPathMap」を削除し、別の方法で認証ページを処理"
     details: "Next.jsのApp Routerでは「generateStaticParams()」を使用する必要がある" 
+
+  - name: "パッケージ設定の競合"
+    date: "2024-04-11"
+    cause: "'transpilePackages'と'serverComponentsExternalPackages'の設定が競合"
+    solution: "重複している'firebase', '@firebase/auth'パッケージをtranspilePackagesから削除"
+    details: "同じパッケージを両方の設定に含めることはできない"
+    
+  - name: "静的生成エラー"
+    date: "2024-04-11"
+    cause: "認証・APIルートを静的生成で処理しようとしている"
+    solution: "静的生成からSSRモードに切り替え、または認証関連ページを静的生成から除外"
+    details: "Firebase認証コンポーネントの初期化前にアクセスされ、多数のエラーが発生している"
+    
+  - name: "Stripe URL未定義エラー"
+    date: "2024-04-11"
+    cause: "「Invalid URL: undefined/dashboard?success=true」エラー発生"
+    solution: "環境変数NEXT_PUBLIC_URLの設定確認と適切なフォールバック処理の追加"
+    details: "ビルド時に環境変数が正しく読み込まれていない" 

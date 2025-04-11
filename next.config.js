@@ -28,7 +28,8 @@ const nextConfig = {
     FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000',
+    NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
   },
   
   // ウェブパックの設定をカスタマイズして問題に対処
@@ -101,7 +102,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   
-  output: 'standalone',  // サーバーコンポーネントとAPIルートを両立させるため
+  output: 'server',  // サーバーコンポーネントとAPIルートを両立させるため
 
   // APIルートをSSGから除外
   async rewrites() {
