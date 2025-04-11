@@ -13,6 +13,10 @@ const nextConfig = {
     
     // キャッシュ関連の問題を修正
     serverComponentsExternalPackages: ['firebase', '@firebase/auth'],
+    
+    // 動的なAPIルートの処理
+    runtime: 'nodejs',
+    serverComponents: true,
   },
   
   images: {
@@ -102,14 +106,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   
-  output: 'standalone',  // 'server'ではなく'standalone'を使う
-  
-  // 静的生成から除外するAPI（新しい構文）
-  unstable_allowDynamic: [
-    '/(auth)/**/*',
-    '/(dashboard)/**/*',
-    '/api/**/*'
-  ],
+  output: 'export',  // 'server'ではなく'export'を使う
 };
 
 module.exports = nextConfig;
