@@ -249,3 +249,14 @@ errors:
     };
     ```
   notes: "APIルート（特に認証が必要なもの）は通常force-dynamicに設定すべきです" 
+
+- error: ルートパス衝突エラー
+  timestamp: 2024-04-11
+  cause: 同じパスに解決される2つの並行ページが存在している
+  solution: |
+    以下のパスが衝突しています：
+    - src/app/(dashboard)/dashboard/page.tsx
+    - src/app/(main)/dashboard/page.tsx
+    
+    どちらかを削除するか、パスを変更する必要があります。
+  details: "Next.jsのルートグループ（括弧で囲まれた部分）はURLパスには影響しないため" 
