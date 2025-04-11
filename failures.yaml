@@ -38,3 +38,14 @@
     2. すべてのFirebaseインポートを修正して正しいモジュラー形式を使用
     3. tailwindcssとpostcssパッケージを追加
   notes: Firebase v9以降はモジュラーAPIを使用。古いインポートパスは機能しない。 
+
+- error: Firebase内部パス参照問題
+  timestamp: 2023-10-02
+  cause: |
+    FirebaseのSDKが内部パス（./app/dist/index.esm.js, ./auth/dist/index.esm.js）を直接参照している
+  solution: |
+    1. @firebase/*の依存関係を更新
+    2. package.jsonのFirebase関連パッケージを整理
+    3. Next.jsのwebpack設定でFirebaseを適切に扱うよう修正
+  notes: |
+    Firebase v11ではパッケージ構造が大きく変更されており、内部パスへの直接アクセスは推奨されていない 

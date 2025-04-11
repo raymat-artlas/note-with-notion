@@ -61,6 +61,18 @@ const nextConfig = {
       };
     }
     
+    // Firebaseのためのpolyfills設定
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        child_process: false,
+        http2: false
+      };
+    }
+    
     return config;
   },
   generateEtags: false,
