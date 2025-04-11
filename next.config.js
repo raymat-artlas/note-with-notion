@@ -3,18 +3,25 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // 静的生成モードを無効化し、サーバーサイドレンダリングを強制
+  // サーバーサイドレンダリングを強制
   output: 'standalone',
+  
+  // ビルド時の静的最適化を無効化
+  optimizeFonts: false,
+  
+  // キャッシュを無効化
+  generateEtags: false,
   
   experimental: {
     // ハイドレーションの対応強化
     optimizeCss: false,
     
-    // チャンク読み込みの問題を修正
-    optimizePackageImports: ['react', 'react-dom', 'next'],
+    // Next.js 14のコンポーネント解決問題対策
+    appDir: true,
+    serverActions: true,
     
-    // Firebaseパッケージを外部化
-    serverComponentsExternalPackages: ['firebase', '@firebase/auth'],
+    // キャッシュを無効化
+    isrMemoryCacheSize: 0,
     
     // クライアントコンポーネントの参照を許可
     serverActions: {
@@ -28,8 +35,10 @@ const nextConfig = {
     // unoptimized: true,
   },
   
-  // 環境変数を明示的に公開
+  // 環境変数設定
   env: {
+    NEXT_PUBLIC_FORCE_DYNAMIC: 'true',
+    OPTIONAL_COMPONENT_CACHE: 'false',
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
     FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
@@ -85,7 +94,6 @@ const nextConfig = {
     
     return config;
   },
-  generateEtags: false,
   assetPrefix: process.env.NODE_ENV === 'production' ? undefined : '',
   async headers() {
     return [
@@ -95,6 +103,9 @@ const nextConfig = {
           { key: 'Access-Control-Allow-Origin', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT' },
           { key: 'Access-Control-Allow-Headers', value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization' },
+          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate, proxy-revalidate' },
+          { key: 'Pragma', value: 'no-cache' },
+          { key: 'Expires', value: '0' }
         ],
       },
     ];

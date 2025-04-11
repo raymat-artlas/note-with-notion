@@ -312,3 +312,13 @@ errors:
     export const runtime = 'nodejs';
     ```
   details: "Next.jsのクライアントコンポーネントでは、'use client'ディレクティブが最初に配置される必要がある"
+
+- error: 静的生成時のコンポーネント解決エラー
+  timestamp: 2024-04-11
+  cause: "ビルド時に「Element type is invalid: expected a string but got: undefined」エラーが多発"
+  solution: |
+    静的生成を完全に無効化し、すべてのページで動的レンダリング強制:
+    1. すべてのページに強制動的レンダリング設定追加
+    2. 静的生成時の問題をバイパスするapp/_document.jsxを追加
+    3. 環境変数でOPTIONAL_COMPONENT_CACHE=falseを設定
+  details: "サーバーコンポーネントとクライアントコンポーネントが混在した状態で静的生成を試行するとエラー発生"
