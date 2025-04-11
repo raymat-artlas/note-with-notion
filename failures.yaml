@@ -332,3 +332,14 @@ errors:
        - コンポーネントツリー全体が動的レンダリングされるよう設定
     2. 重要なページにサーバーコンポーネントを使用
   details: "Next.js 14.2のApp Router環境で複雑なコンポーネント構造の静的生成に互換性問題が発生"
+
+- error: 静的生成エラーの最終対応策
+  timestamp: 2024-04-11
+  cause: "Next.js 14.2.28で静的生成が失敗：「Cannot read properties of undefined (reading 'clientModules')」"
+  solution: |
+    1. 完全なSSRモードに変更：
+       - すべての実験的設定を最小限に留める
+       - ページファイルとルート設定を簡素化
+       - メインページをpages/に移動してSSRモードに
+    2. 静的ページとSSRページを明確に分離
+  details: "Next.js 14.2でのクライアントコンポーネントとサーバーコンポーネントが混在した場合の静的生成に根本的な問題がある"
