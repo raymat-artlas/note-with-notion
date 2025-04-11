@@ -362,3 +362,22 @@ errors:
     2. src/appディレクトリのルーティング設定をシンプル化
     3. appディレクトリからの参照を完全にクリーンアップ
   details: "App RouterとPages Routerの混在環境でビルド時に不要なファイル参照が残っている"
+
+- error: App Routerページの二重定義問題
+  timestamp: 2024-04-11
+  cause: "src/app/page.tsxファイル内で複数のdefaultエクスポートが定義されている"
+  solution: |
+    ファイル内の重複するデフォルトエクスポートを統合または削除:
+    1. 一つのデフォルトエクスポートに統合
+    2. Pages Routerに完全に移行
+  details: "同じファイル内で2つの「export default」宣言があるとJavaScriptエラーになる"
+
+- error: シェル特殊文字の解釈エラー
+  timestamp: 2024-04-11
+  cause: "zshシェルで括弧が特殊文字として解釈される問題"
+  solution: |
+    括弧を含むディレクトリ名を操作する場合は引用符でエスケープ:
+    1. シングルクォートを使用: rm -rf 'src/app/(main)'
+    2. ダブルクォートを使用: rm -rf "src/app/(main)"
+    3. バックスラッシュでエスケープ: rm -rf src/app/\(main\)
+  details: "zshシェルでは括弧()はグロブパターンの特殊文字として解釈されるため文字列としての扱いに注意が必要"

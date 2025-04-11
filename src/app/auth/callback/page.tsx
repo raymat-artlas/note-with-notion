@@ -1,73 +1,45 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { auth } from '@/lib/firebase';
 
 export default function AuthCallback() {
-  const { user } = useAuth();
-
+  const router = useRouter();
+  const [status, setStatus] = useState<string>('認証情報を処理中...');
+  
   useEffect(() => {
-    async function handleAuthCallback() {
-      if (user) {
-        try {
-          // Firebase IDトークンを取得
-          const idToken = await user.getIdToken();
-          
-          // 拡張機能に送信するデータを準備
-          const authData = {
-            isLoggedIn: true,
-            authToken: idToken,
-            uid: user.uid,
-            email: user.email,
-            action: 'auth_callback'
-          };
-          
-          // 拡張機能のExtension IDを環境変数から取得
-          const extensionId = process.env.NEXT_PUBLIC_EXTENSION_ID;
-          
-          // Chrome拡張機能にメッセージを送信（拡張機能IDがある場合）
-          if (extensionId) {
-            chrome.runtime.sendMessage(extensionId, authData, (response) => {
-              if (response && response.success) {
-                // 成功メッセージを表示
-                document.getElementById('status')!.textContent = 
-                  '認証成功！拡張機能にログイン情報が保存されました。このページは閉じて構いません。';
-              }
-            });
-          } else {
-            // 拡張機能をインストールするように促すメッセージ
-            document.getElementById('extension-required')!.style.display = 'block';
-          }
-        } catch (error) {
-          console.error('認証情報の送信エラー:', error);
-          document.getElementById('error')!.textContent = 
-            'エラーが発生しました。もう一度お試しください。';
+    // 認証処理
+    const handleAuth = async () => {
+      try {
+        // 現在のユーザー情報を取得
+        const user = auth.currentUser;
+        
+        if (!user) {
+          setStatus('ユーザー情報が見つかりません。再ログインしてください。');
+          setTimeout(() => router.push('/login'), 2000);
+          return;
         }
+        
+        // 認証成功時
+        setStatus('認証成功！リダイレクトします...');
+        setTimeout(() => router.push('/dashboard'), 1000);
+      } catch (error) {
+        console.error('認証エラー:', error);
+        setStatus('認証処理中にエラーが発生しました。');
       }
-    }
+    };
     
-    handleAuthCallback();
-  }, [user]);
+    handleAuth();
+  }, [router]);
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">拡張機能認証</h1>
-        
-        <div id="status" className="mb-4">
-          認証処理中...
-        </div>
-        
-        <div id="error" className="text-red-600 mb-4"></div>
-        
-        <div id="extension-required" style={{display: 'none'}} className="p-4 bg-yellow-100 rounded-md">
-          <p className="mb-2">Chrome拡張機能がインストールされていないか、設定が正しくありません。</p>
-          <a 
-            href="/dashboard" 
-            className="text-indigo-600 hover:underline"
-          >
-            ダッシュボードに戻る
-          </a>
+      <div className="p-8 bg-white rounded-lg shadow-md max-w-md w-full">
+        <h2 className="text-2xl font-bold mb-4 text-center">認証処理</h2>
+        <p id="status" className="text-center mb-4">{status}</p>
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
       </div>
     </div>
