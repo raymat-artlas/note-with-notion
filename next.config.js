@@ -112,17 +112,6 @@ const nextConfig = {
       },
     ];
   },
-
-  // 認証関連のページを静的生成から除外
-  async exportPathMap(defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
-    const pathMap = { ...defaultPathMap };
-    // 認証が必要なページを削除
-    delete pathMap['/login'];
-    delete pathMap['/signup'];
-    delete pathMap['/dashboard'];
-    // 他の認証必須ページも同様に削除
-    return pathMap;
-  },
 };
 
 module.exports = nextConfig;
