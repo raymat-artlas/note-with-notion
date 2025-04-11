@@ -343,3 +343,13 @@ errors:
        - メインページをpages/に移動してSSRモードに
     2. 静的ページとSSRページを明確に分離
   details: "Next.js 14.2でのクライアントコンポーネントとサーバーコンポーネントが混在した場合の静的生成に根本的な問題がある"
+
+- error: App RouterとPages Router混在による競合エラー
+  timestamp: 2024-04-11
+  cause: "App Router (/(main)/page)とPages Router (pages/index.tsx)の両方が「/」パスで競合"
+  solution: |
+    Pages Routerをメインとし、App Routerを完全に無効化:
+    1. src/app/(main)/page.tsxを削除またはリネーム
+    2. ルート「/」は一方のみが処理するよう設定
+    3. 暫定的な措置として重要ページをすべてPages Routerに移行
+  details: "Next.js 14では同じパスにApp RouterとPages Routerの両方があると競合が発生する"
