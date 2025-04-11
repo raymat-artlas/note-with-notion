@@ -2,6 +2,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FaChrome, FaCheck, FaGlobe, FaStickyNote, FaBookmark, FaDatabase } from 'react-icons/fa';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function Home() {
   return (
     <div className="bg-white">

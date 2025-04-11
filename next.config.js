@@ -16,14 +16,7 @@ const nextConfig = {
     // ハイドレーションの対応強化
     optimizeCss: false,
     
-    // Next.js 14のコンポーネント解決問題対策
-    appDir: true,
-    serverActions: true,
-    
-    // キャッシュを無効化
-    isrMemoryCacheSize: 0,
-    
-    // クライアントコンポーネントの参照を許可
+    // サーバーアクションの設定のみ残す
     serverActions: {
       allowedOrigins: ['localhost:3000', 'note-with-notion.vercel.app']
     }

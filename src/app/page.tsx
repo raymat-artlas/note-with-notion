@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from 'next/link';
 import MainLayout from '@/components/layout/MainLayout';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function Home() {
   return (
     <MainLayout>

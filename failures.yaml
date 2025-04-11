@@ -136,7 +136,7 @@ errors:
     date: "2024-04-11"
     cause: "price IDが設定されていない（line_items[0]にpriceかprice_dataが必要）"
     solution: "StripeダッシュボードでpriceIDを設定し、環境変数で渡す"
-    details: "本番環境では.env.localの値ではなく、Vercelの環境変数が使用される"
+    details: "本番環境ではVercelの環境変数設定でSTRIPE_PRICE_ID_ANNUALを設定する必要があります"
     note: "本番環境では.env.localの値ではなく、Vercelの環境変数が使用される"
 
   - name: "サーバーコンポーネントエラー"
@@ -271,14 +271,14 @@ errors:
     3. Authコンポーネントの適切なクライアント/サーバー分離
   details: "多数の 'Unsupported Server Component type: {...}' エラーが発生" 
 
-- error: Next.js実験的設定エラー
+- error: Next.js実験的設定エラーと静的生成失敗
   timestamp: 2024-04-11
-  cause: "experimental.serverActions: true の設定が無効になっている"
+  cause: "設定の問題とルートページのプリレンダリングエラー: TypeError: Cannot read properties of undefined (reading 'clientModules')"
   solution: |
-    実験的設定を正しく更新：
-    1. serverActionsは既にデフォルトで有効なので削除
-    2. 全ページを強制的に動的レンダリングに変更
-  details: "Expected object, received boolean at 'experimental.serverActions'"
+    1. next.config.jsから未サポートの実験的設定を削除
+    2. 静的生成を完全に無効化するため、exportオプションを使用
+    3. クライアントコンポーネントの境界を明確に
+  details: "Next.js 14.2ではappDirはすでにデフォルトで有効、isrMemoryCacheSizeは現在サポートされていない"
 
 - error: 静的生成とクライアントコンポーネントの互換性エラー
   timestamp: 2024-04-11

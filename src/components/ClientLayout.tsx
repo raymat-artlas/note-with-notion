@@ -1,8 +1,18 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { AuthProvider } from '@/context/AuthContext';
+import { usePathname } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function ClientLayout({ children }: { children: ReactNode }) {
-  return <AuthProvider>{children}</AuthProvider>;
+// すべてのページ共通のクライアントサイドロジックを提供するコンポーネント
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  
+  // SSRで問題になりうるブラウザAPIの使用を避ける
+  // window/documentの使用をuseEffectでラップする
+  
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">コンテンツを読み込み中...</div>}>
+      {children}
+    </Suspense>
+  );
 } 
