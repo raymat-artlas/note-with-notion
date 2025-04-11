@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth as adminAuth } from '@/lib/firebase/admin';
+import { auth } from '@/lib/firebase/admin';
 
 export async function GET(request: Request) {
   try {
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const token = authHeader.split('Bearer ')[1];
     
     // Firebaseでトークンを検証
-    const decodedToken = await adminAuth.verifyIdToken(token);
+    const decodedToken = await auth.verifyIdToken(token);
     
     return NextResponse.json({
       uid: decodedToken.uid,

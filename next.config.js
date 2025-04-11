@@ -106,7 +106,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   
-  output: 'export',  // 'server'ではなく'export'を使う
+  output: 'standalone',  // 'export'ではなく'standalone'を使う
 };
 
 module.exports = nextConfig;
