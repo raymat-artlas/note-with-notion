@@ -27,3 +27,14 @@
        git push
     3. Vercelのキャッシュをクリアする（必要に応じて）
   notes: ファイル削除のコミットがVercelに正しく反映されていない場合がある 
+
+- error: FirebaseモジュールパスおよびTailwindCSS問題
+  timestamp: 2023-10-02
+  cause: |
+    1. Firebaseのインポートパスが壊れている（古いバージョン形式または不正なパス）
+    2. TailwindCSSのパッケージが見つからない
+  solution: |
+    1. package.jsonを更新しFirebaseの最新バージョンをインストール
+    2. すべてのFirebaseインポートを修正して正しいモジュラー形式を使用
+    3. tailwindcssとpostcssパッケージを追加
+  notes: Firebase v9以降はモジュラーAPIを使用。古いインポートパスは機能しない。 
