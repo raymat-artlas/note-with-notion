@@ -1,14 +1,14 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { FirebaseError } from 'firebase/app';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/lib/firebase/client';
-
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');

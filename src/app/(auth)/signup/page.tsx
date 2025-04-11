@@ -1,14 +1,14 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase/client';
-
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
 
 export default function Signup() {
   const [name, setName] = useState('');

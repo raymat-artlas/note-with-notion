@@ -299,3 +299,16 @@ errors:
     2. 全ページで動的レンダリングを強制
     3. コンポーネントのクライアント/サーバー分離を徹底
   details: "現在のNext.jsバージョンでは'server'出力モードがサポートされていない"
+
+- error: 'use client' ディレクティブの配置エラー
+  timestamp: 2024-04-11
+  cause: "'use client' ディレクティブがファイルの先頭ではなく、他の式の後に配置されている"
+  solution: |
+    クライアントコンポーネントでは、'use client'を必ずファイルの先頭（コメントを除く）に配置する：
+    ```typescript
+    'use client';
+    
+    export const dynamic = 'force-dynamic';
+    export const runtime = 'nodejs';
+    ```
+  details: "Next.jsのクライアントコンポーネントでは、'use client'ディレクティブが最初に配置される必要がある"
