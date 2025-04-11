@@ -279,3 +279,13 @@ errors:
     1. serverActionsは既にデフォルトで有効なので削除
     2. 全ページを強制的に動的レンダリングに変更
   details: "Expected object, received boolean at 'experimental.serverActions'"
+
+- error: 静的生成とクライアントコンポーネントの互換性エラー
+  timestamp: 2024-04-11
+  cause: "サーバーコンポーネントとクライアントコンポーネントが混在した状態で静的生成を試みている"
+  solution: |
+    静的生成を完全に諦め、SSRモードに切り替える：
+    1. next.config.jsでoutputを'export'から'server'に変更
+    2. 各ページファイルに`export const dynamic = 'force-dynamic'`を追加
+    3. vercel.jsonファイルでSSRモードを明示的に設定
+  details: "Element type is invalid: expected a string but got: undefined"

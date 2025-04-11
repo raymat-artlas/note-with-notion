@@ -3,7 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // Stripeリダイレクト後の問題に対処
+  // 静的生成モードを無効化し、サーバーサイドレンダリングを強制
+  output: 'server',
+  
   experimental: {
     // ハイドレーションの対応強化
     optimizeCss: false,
@@ -13,12 +15,17 @@ const nextConfig = {
     
     // Firebaseパッケージを外部化
     serverComponentsExternalPackages: ['firebase', '@firebase/auth'],
+    
+    // クライアントコンポーネントの参照を許可
+    serverActions: {
+      allowedOrigins: ['localhost:3000', 'note-with-notion.vercel.app']
+    }
   },
   
   images: {
     domains: ['lh3.googleusercontent.com', 'firebasestorage.googleapis.com'],
-    // staticモードでは外部画像をunoptimizedに設定
-    unoptimized: true,
+    // unoptimizedは不要になるので削除
+    // unoptimized: true,
   },
   
   // 環境変数を明示的に公開
@@ -103,8 +110,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  
-  output: 'standalone',  // 'export'ではなく'standalone'を使用
 };
 
 module.exports = nextConfig;
