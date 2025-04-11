@@ -270,3 +270,12 @@ errors:
     2. すべてのAPIルートに force-dynamic 設定を追加
     3. Authコンポーネントの適切なクライアント/サーバー分離
   details: "多数の 'Unsupported Server Component type: {...}' エラーが発生" 
+
+- error: Next.js実験的設定エラー
+  timestamp: 2024-04-11
+  cause: "experimental.serverActions: true の設定が無効になっている"
+  solution: |
+    実験的設定を正しく更新：
+    1. serverActionsは既にデフォルトで有効なので削除
+    2. 全ページを強制的に動的レンダリングに変更
+  details: "Expected object, received boolean at 'experimental.serverActions'"

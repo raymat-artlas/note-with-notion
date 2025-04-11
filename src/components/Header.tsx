@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase/client';
 import { db } from '@/lib/firebase/client';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);

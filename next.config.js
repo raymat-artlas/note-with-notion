@@ -13,9 +13,6 @@ const nextConfig = {
     
     // Firebaseパッケージを外部化
     serverComponentsExternalPackages: ['firebase', '@firebase/auth'],
-    
-    // サポートされていない設定を削除
-    serverActions: true,
   },
   
   images: {
