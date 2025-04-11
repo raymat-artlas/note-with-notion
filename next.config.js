@@ -52,13 +52,13 @@ const nextConfig = {
     
     // Firebaseを適切に処理する設定
     if (!isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        // ブラウザ専用バンドルを使用
-        'firebase/app': 'firebase/app/dist/index.esm.js',
-        'firebase/auth': 'firebase/auth/dist/index.esm.js',
-        'firebase/firestore': 'firebase/firestore/dist/index.esm.js',
-      };
+      // 以下のエイリアス設定を完全に削除
+      // config.resolve.alias = {
+      //   ...config.resolve.alias,
+      //   'firebase/app': 'firebase/app/dist/index.esm.js',
+      //   'firebase/auth': 'firebase/auth/dist/index.esm.js',
+      //   'firebase/firestore': 'firebase/firestore/dist/index.esm.js',
+      // };
     }
     
     // Firebaseのためのpolyfills設定
