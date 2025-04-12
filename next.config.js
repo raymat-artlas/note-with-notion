@@ -3,8 +3,27 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // SSR強制モード
+  // 実験的機能は最小限に絞る
+  experimental: {
+    // 必須の設定のみ残す
+    optimizePackageImports: ['react-icons'],
+  },
+  
+  // ビルドエラーはデプロイのために無視
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  
+  // スタンドアロンモードでデプロイ
   output: 'standalone',
+  
+  // 画像ドメイン設定
+  images: {
+    domains: ['lh3.googleusercontent.com', 'firebasestorage.googleapis.com'],
+  },
   
   // Pages Routerを優先
   experimental: {
@@ -12,11 +31,6 @@ const nextConfig = {
     serverActions: {
       allowedOrigins: ['localhost:3000', 'note-with-notion.vercel.app']
     }
-  },
-  
-  // 画像設定
-  images: {
-    domains: ['lh3.googleusercontent.com', 'firebasestorage.googleapis.com'],
   },
   
   // 環境変数
@@ -50,10 +64,6 @@ const nextConfig = {
       },
     ];
   },
-  
-  // エラーチェックは無視
-  eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
 };
 
 module.exports = nextConfig;

@@ -419,3 +419,15 @@ errors:
        - src/pages/_app.tsxでの認証初期化処理の見直し
        - 動的インポートを使用してサーバーサイドでのFirebase初期化を防止
   details: "サーバーサイドでのFirebase認証の初期化が適切に行われておらず、不正な参照が発生している"
+
+- error: サーバーコンポーネントレンダリングエラー
+  timestamp: 2024-04-11
+  cause: "App Router環境でのサーバーコンポーネントとクライアントコンポーネントの区別が不適切"
+  solution: |
+    1. すべてのApp Routerページに'use client'を追加:
+       - src/app/page.tsx、src/app/layout.tsxへの'use client'ディレクティブ追加
+       - または非クライアントページを単純なスタティックコンテンツに変更
+    2. 完全なサーバーサイドレンダリング防止:
+       - next.config.jsでconfigを更新: `experimental.serverComponentsExternalPackages = []`
+       - または全てのページをPages Routerに移行（推奨）
+  details: "サーバーコンポーネントがクライアント依存のライブラリにアクセスしようとしてエラー発生"
