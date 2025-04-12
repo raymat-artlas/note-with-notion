@@ -431,3 +431,16 @@ errors:
        - next.config.jsでconfigを更新: `experimental.serverComponentsExternalPackages = []`
        - または全てのページをPages Routerに移行（推奨）
   details: "サーバーコンポーネントがクライアント依存のライブラリにアクセスしようとしてエラー発生"
+
+- error: Firebase認証機能の問題
+  timestamp: 2024-04-11
+  cause: "クライアントサイドとサーバーサイドでのFirebase初期化の不整合"
+  solution: |
+    1. 認証関連ページを完全にPages Routerに移行:
+       - src/pages/login.tsx, src/pages/signup.tsxとして実装
+       - クライアントサイド専用のFirebase初期化処理
+       - エラーハンドリングの強化
+    2. AuthContextの改善:
+       - ユーザー状態の永続化設定の追加
+       - ブラウザストレージとの連携強化
+  details: "Next.jsのApp RouterとPages Routerの混在環境で認証状態の共有が適切に行われていない"
