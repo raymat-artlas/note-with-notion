@@ -1,68 +1,110 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
-// firebase/authモジュールから直接インポートを避け、カスタムFirebaseモジュールを使用
-import { auth } from '@/lib/firebase/client';
-// 必要な型定義だけをインポート
-import type { User as FirebaseUser } from 'firebase/auth';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  signOut,
+  User
+} from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
-// 型定義
-type User = {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-};
-
-type AuthContextType = {
+// 認証コンテキストの型定義
+interface AuthContextType {
   user: User | null;
   loading: boolean;
-};
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+}
 
-// 認証コンテキスト作成
-const AuthContext = createContext<AuthContextType>({
+// デフォルト値
+const defaultContext: AuthContextType = {
   user: null,
   loading: true,
-});
+  login: async () => {},
+  signup: async () => {},
+  logout: async () => {}
+};
 
-// プロバイダーコンポーネント
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+// コンテキスト作成
+const AuthContext = createContext<AuthContextType>(defaultContext);
+
+// 認証プロバイダーコンポーネント
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authInitialized, setAuthInitialized] = useState(false);
 
+  // 認証状態を監視
   useEffect(() => {
-    // サーバーサイドでは実行しない
-    if (typeof window === 'undefined') return;
-    
-    // authモジュールがクライアント側で初期化されているか確認
-    if (!auth) {
-      console.error('Firebase auth module not initialized');
-      setLoading(false);
-      return;
-    }
-    
-    // 認証状態の監視（直接onAuthStateChangedを使わずにカスタム方法で監視）
-    const unsubscribe = auth.onAuthStateChanged((firebaseUser: any) => {
-      if (firebaseUser) {
-        setUser({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName,
-        });
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
-    });
+    // ブラウザ環境でのみ実行
+    if (typeof window !== 'undefined') {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setUser(user);
+        setLoading(false);
+        setAuthInitialized(true);
+      });
 
-    return unsubscribe;
+      return () => unsubscribe();
+    } else {
+      // サーバーサイドでは即座に読み込み完了
+      setLoading(false);
+    }
   }, []);
 
+  // ログイン処理
+  const login = async (email: string, password: string) => {
+    try {
+      setLoading(true);
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error('ログインエラー:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // サインアップ処理
+  const signup = async (email: string, password: string) => {
+    try {
+      setLoading(true);
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error('サインアップエラー:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ログアウト処理
+  const logout = async () => {
+    try {
+      setLoading(true);
+      await signOut(auth);
+    } catch (error) {
+      console.error('ログアウトエラー:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 // カスタムフック
-export const useAuth = () => useContext(AuthContext); 
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+} 

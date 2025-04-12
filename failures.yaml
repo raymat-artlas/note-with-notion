@@ -406,3 +406,16 @@ errors:
        - デプロイプレビュー機能の活用
        - CIパイプラインの強化
   details: "Next.js 14の現状では、Pages RouterとApp Routerの混在は避けるべき。一方に統一することが推奨"
+
+- error: サーバーサイド認証例外
+  timestamp: 2024-04-11
+  cause: "Firebaseクライアント初期化とサーバーサイドレンダリングの競合"
+  solution: |
+    1. Pages Routerでの認証処理を修正:
+       - useAuth hookの使用方法を修正
+       - クライアントコンポーネントと認証処理の分離
+       - 環境変数の確認と修正
+    2. 暫定対応:
+       - src/pages/_app.tsxでの認証初期化処理の見直し
+       - 動的インポートを使用してサーバーサイドでのFirebase初期化を防止
+  details: "サーバーサイドでのFirebase認証の初期化が適切に行われておらず、不正な参照が発生している"

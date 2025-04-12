@@ -2,7 +2,10 @@ import '../app/globals.css';
 import type { AppProps } from 'next/app';
 import { AuthProvider } from '@/context/AuthContext';
 import Head from 'next/head';
-import Header from '@/components/Header';
+import dynamic from 'next/dynamic';
+
+// Headerコンポーネントを動的インポートしてサーバーサイドでの実行を避ける
+const Header = dynamic(() => import('@/components/Header'), { ssr: false });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
