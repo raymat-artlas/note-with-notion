@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Head from 'next/head';
 import { FaChrome, FaCheck, FaGlobe, FaStickyNote, FaBookmark, FaDatabase, FaArrowRight } from 'react-icons/fa';
+import { useAuth } from '@/context/AuthContext';
 
 // SSRを強制
 export const getServerSideProps = async ({ query }) => {
@@ -19,12 +20,18 @@ export const getServerSideProps = async ({ query }) => {
 
 export default function HomePage({ serverTime, hasRedirectParam }) {
   const router = useRouter();
+  const { user, loading } = useAuth();
   
   // リダイレクトループ防止
   useEffect(() => {
     if (hasRedirectParam) {
       const cleanUrl = window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
+    }
+    
+    // ユーザーがログインしている場合はダッシュボードにリダイレクト
+    if (user && !loading) {
+      router.push('/dashboard');
     }
     
     // スクロールアニメーション
@@ -42,13 +49,13 @@ export default function HomePage({ serverTime, hasRedirectParam }) {
     handleScroll(); // 初期表示時にも実行
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasRedirectParam]);
+  }, [hasRedirectParam, user, loading, router]);
   
   return (
     <>
       <Head>
-        <title>note with Notion - アイデアを整理・保存・活用</title>
-        <meta name="description" content="noteの記事をNotionに簡単保存。あなたのアイデアベースを構築します。" />
+        <title>note with Notion - ホーム</title>
+        <meta name="description" content="noteの記事をNotionに保存するアプリ" />
         <style>{`
           @keyframes fadeInUp {
             from {
