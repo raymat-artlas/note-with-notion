@@ -392,3 +392,17 @@ errors:
     2. 一時的な緊急対策:
        - src/app/page.tsxのリダイレクト処理を無効化
   details: "App RouterがPages Routerにリダイレクトし、循環参照が発生している"
+
+- error: デプロイ成功後の次のステップ
+  timestamp: 2024-04-11
+  cause: "App RouterとPages Routerの混在環境での安定性確保"
+  solution: |
+    1. 今後の開発方針の確立:
+       - 当面はPages Routerをメインとして使用
+       - 段階的に必要なページだけをApp Routerに移行
+       - コンポーネント構造の見直しと最適化
+    2. 環境設定の標準化:
+       - Vercel環境変数の整理と確認
+       - デプロイプレビュー機能の活用
+       - CIパイプラインの強化
+  details: "Next.js 14の現状では、Pages RouterとApp Routerの混在は避けるべき。一方に統一することが推奨"
