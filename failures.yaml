@@ -346,7 +346,7 @@ errors:
 
 - error: App RouterとPages Router混在による競合エラー
   timestamp: 2024-04-11
-  cause: "App Router (/(main)/page)とPages Router (pages/index.tsx)の両方が「/」パスで競合"
+  cause: "App Router（src/app/）とPages Router（src/pages/）の両方が「/」パスで競合"
   solution: |
     Pages Routerをメインとし、App Routerを完全に無効化:
     1. src/app/(main)/page.tsxを削除またはリネーム
@@ -444,3 +444,13 @@ errors:
        - ユーザー状態の永続化設定の追加
        - ブラウザストレージとの連携強化
   details: "Next.jsのApp RouterとPages Routerの混在環境で認証状態の共有が適切に行われていない"
+
+- error: App Router根本問題の解決
+  timestamp: 2024-04-11
+  cause: "App Router（src/app/）とPages Router（src/pages/）の混在による競合"
+  solution: |
+    1. App Routerディレクトリを一時的に無効化:
+       - src/appディレクトリ全体の名前を変更: `mv src/app src/_app_disabled`
+       - または完全に削除: `rm -rf src/app`
+    2. Pages Routerのみを使用する構成に統一
+  details: "Next.js 14での両Router混在は問題が多く、一方に統一することが最適な解決策"
