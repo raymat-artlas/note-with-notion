@@ -1,12 +1,13 @@
-'use client';
-
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Suspense } from 'react';
-import Header from '@/components/Header';
+import dynamic from 'next/dynamic';
 import ClientLayout from '@/components/ClientLayout';
-import { dynamic, revalidate, fetchCache, runtime } from './config';
+import { dynamic as pageDynamic, revalidate, fetchCache, runtime } from './config';
+
+// Headerをクライアントのみで実行するため動的インポート
+const Header = dynamic(() => import('@/components/Header'), { ssr: false });
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +20,7 @@ export function reportWebVitals(metric) {
   console.log('Web Vitals:', metric);
 }
 
-export { dynamic, revalidate, fetchCache, runtime };
+export { pageDynamic as dynamic, revalidate, fetchCache, runtime };
 
 export default function RootLayout({
   children,

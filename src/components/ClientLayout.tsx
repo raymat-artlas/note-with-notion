@@ -1,27 +1,23 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { Suspense, useEffect } from 'react';
-import { AuthProvider } from '@/context/AuthContext';
+import React, { useEffect } from 'react';
 
-// すべてのページ共通のクライアントサイドロジックを提供するコンポーネント
+// クライアントサイドのレイアウト機能を担当するコンポーネント
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  
-  // 強制的にクライアントサイドレンダリングを確保
   useEffect(() => {
-    // Next.jsのクライアントサイドナビゲーションを強制
-    if (typeof window !== 'undefined') {
-      window.__NEXT_DATA__ = window.__NEXT_DATA__ || {};
-      window.__NEXT_DATA__.props = window.__NEXT_DATA__.props || {};
-    }
+    // クライアントサイドのみの機能をここに実装
+    const handleRouteChange = () => {
+      // ページ遷移時の処理
+      document.getElementById('loading')?.style.setProperty('display', 'none');
+    };
+
+    // ページロード完了時
+    window.addEventListener('load', handleRouteChange);
+    
+    return () => {
+      window.removeEventListener('load', handleRouteChange);
+    };
   }, []);
-  
-  return (
-    <AuthProvider>
-      <Suspense fallback={<div className="min-h-screen flex items-center justify-center">コンテンツを読み込み中...</div>}>
-        {children}
-      </Suspense>
-    </AuthProvider>
-  );
+
+  return <>{children}</>;
 } 
